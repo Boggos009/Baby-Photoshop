@@ -1,6 +1,24 @@
+# IDEs & Editors
 .vscode/
-CS213_A1_Part1_SectionNum_20250113_20250125_2025247_20250513.exe
-ez.jpg
-luffy.jpg
-luffynew.jpg
-building.jpg
+.idea/
+cmake-build-*/
+
+# Binaries & Compiled Files (Linux & Windows)
+*.exe
+*.out
+*.o
+*.obj
+
+# Ignore all images
+*.[jJ][pP][gG]
+*.[jJ][pP][eE][gG]
+*.[pP][nN][gG]
+*.[bB][mM][pP]
+*.[tT][gG][aA]
+
+# Exception: Keep luffy.jpg
+!luffy.jpg
+
+# System files
+.DS_Store
+Thumbs.db
