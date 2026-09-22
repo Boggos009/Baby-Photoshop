@@ -70,7 +70,17 @@ void BlackandWhite()
 // Filter 3
 void InvertImage()
 {
-    cout<<"Will be Implemented Soon....\n";
+    for(int i=0;i<currentImg.width;i++)
+    {
+        for(int j=0;j<currentImg.height;j++)
+        {
+            currentImg(i,j,0)=255-currentImg(i, j, 0);
+            currentImg(i,j,1)=255-currentImg(i, j, 1);
+            currentImg(i,j,2)=255-currentImg(i, j, 2);
+
+        }
+    }
+    Saving();
 }
 
 
@@ -153,7 +163,29 @@ void OldTv()
 // Filter 15
 void PurpleWano()
 {
-    cout<<"Will be Implemented Soon....\n";
+     for(int i=0;i<currentImg.width;i++)
+    {
+        for(int j=0;j<currentImg.height;j++)
+        {
+            int r = currentImg(i,j, 0);
+            int g = currentImg(i,j, 1);
+            int b = currentImg(i,j, 2);
+
+            r = (int)(r * 1.15);
+            g = (int)(g * 0.72); 
+            b = (int)(b * 1.18); 
+
+            if (r > 255) r = 255;
+            if (g > 255) g = 255;
+            if (b > 255) b = 255;
+
+            currentImg(i, j, 0) = (unsigned char)r;
+            currentImg(i, j, 1) = (unsigned char)g;
+            currentImg(i, j, 2) = (unsigned char)b;
+
+        }
+    }
+    Saving();
 }
 
 
