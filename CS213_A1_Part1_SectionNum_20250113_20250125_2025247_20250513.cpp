@@ -1,4 +1,5 @@
 #include "Image_Class.h"
+#include <iomanip>
 
 /*
     Name            ID      Section     What he did
@@ -26,6 +27,9 @@ string currentFIle="";
 bool rediriction(int op);
 int showMenu();
 void Exit();
+void ChooseImg();
+void Saving();
+
 
 
 //Filters Functions
@@ -40,7 +44,26 @@ void GrayscaleConversion()
 //Filter 2
 void BlackandWhite()
 {
-    cout<<"Will be Implemented Soon....\n";
+    for(int i=0;i<currentImg.width;i++)
+    {
+        for(int j=0;j<currentImg.height;j++)
+        {
+            int avg = 0;
+            for(int k=0;k<currentImg.channels;k++)
+            
+                avg+=currentImg(i,j,k);
+            
+            avg/=3;
+            if(avg>=125)
+                avg = 255;
+            else
+                avg = 0;
+            
+            for(int k=0;k<currentImg.channels;k++)
+                currentImg(i,j,k) = avg;
+        }
+    }
+    Saving();
 }
 
 
@@ -145,9 +168,7 @@ void Infrared()
 
 int main()
 {
-    currentImg = Image(200,200);
-    currentImg.saveImage("ez.jpg");
-    currentFIle = "ez.jpg";
+    ChooseImg();
     int op;
     while ((op = showMenu())<=16)
     {
@@ -159,10 +180,39 @@ int main()
 
 
 //Auxiliary Funtions
+void ChooseImg()
+{
+    cout<<"Choose an image please with any of the following extensions: (.JPG, .JPEG, .BMP, .PNG, .TGA)\n";
+    string name;cin>>name;
+    currentImg.loadNewImage(name);
+    currentFIle = name;
+}
+
+//saving options (Edit the current image, or create a new one with the same edits.)
+void Saving()
+{
+    cout<<"Would you like to edit the current image or create a new one with these edits?(0 for edit - one for create another one)\n";
+    int op;
+    cin>>op;
+    if(op)
+    {
+        cout<<"Please enter the new image's name: ";
+        string name;cin>>name;
+        currentImg.saveImage(name);
+    }
+    else
+        currentImg.saveImage(currentFIle);
+    cout<<"Image saved successfully\n";
+}
+
 bool rediriction(int op)
 {
     switch (op)
     {
+    case 0:
+        system("cls");
+        ChooseImg();
+        break;
     case 1:
         system("cls");
         GrayscaleConversion();
@@ -288,7 +338,7 @@ void Exit()
 {
     system("cls");
     cout<<"\t\t---------------------------------\n";
-    cout<<"\t\tSee you in the next time\n";
+    cout << "\t\t" << setw(30) << "See you in the next time\n";
     cout<<"\t\t---------------------------------\n";
 }
 
