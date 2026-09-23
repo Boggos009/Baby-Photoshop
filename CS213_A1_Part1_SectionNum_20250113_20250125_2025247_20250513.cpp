@@ -10,7 +10,7 @@ Bavly Boules    20250113                1,4
 Bemwa Bakhet    20250125                2,6
 
 
-Zeyad Sayed     20250247                3,7
+Zeyad Sayed     20250247                3,15
 
 
 Martin Rashad   20250513                4,8
@@ -99,9 +99,48 @@ void FlipImage()
 
 
 // Filter 6
+void nineteen()
+{
+    Image img2(currentImg.height, currentImg.width);
+    
+    for(int y=0;y<currentImg.height;y++)
+    {
+        for(int x=0;x<currentImg.width;x++)
+        {
+            for(int k=0;k<currentImg.channels;k++)
+            {
+                img2(currentImg.height-1-y, x, k) = currentImg(x, y, k);
+            }
+        }
+    }
+    currentImg = img2;
+}
 void RotateImage()
 {
-    cout<<"Will be Implemented Soon....\n";
+    cout<<"Choose the degree of rotating (90/180/270)\n";
+    int degree;cin>>degree;
+    switch (degree)
+    {
+    case 90:
+        nineteen();
+        break;
+    case 180:
+        //temporary implemented by 2*90
+        nineteen();
+        nineteen();
+        break;
+    case 270:
+        //temporary implemented by 3*90
+        nineteen();
+        nineteen();
+        nineteen();
+        break;
+    default:
+        cout<<"Invalid choice\n";
+        return;
+        break;
+    }
+    Saving();
 }
 
 
@@ -163,7 +202,7 @@ void OldTv()
 // Filter 15
 void PurpleWano()
 {
-     for(int i=0;i<currentImg.width;i++)
+    for(int i=0;i<currentImg.width;i++)
     {
         for(int j=0;j<currentImg.height;j++)
         {
