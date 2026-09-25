@@ -115,6 +115,41 @@ void nineteen()
     }
     currentImg = img2;
 }
+
+void onehundredEighty()
+{
+    Image img2(currentImg.width, currentImg.height);
+    
+    for(int y=0;y<currentImg.height;y++)
+    {
+        for(int x=0;x<currentImg.width;x++)
+        {
+            for(int k=0;k<currentImg.channels;k++)
+            {
+                img2(currentImg.width-1-x, currentImg.height-1-y, k) = currentImg(x, y, k);
+            }
+        }
+    }
+    currentImg = img2;
+}
+
+void twohundredseventy()
+{
+    Image img2(currentImg.height, currentImg.width);
+    
+    for(int y=0;y<currentImg.height;y++)
+    {
+        for(int x=0;x<currentImg.width;x++)
+        {
+            for(int k=0;k<currentImg.channels;k++)
+            {
+                img2(y, currentImg.width-1-x, k) = currentImg(x, y, k);
+            }
+        }
+    }
+    currentImg = img2;
+
+}
 void RotateImage()
 {
     cout<<"Choose the degree of rotating (90/180/270)\n";
@@ -125,15 +160,10 @@ void RotateImage()
         nineteen();
         break;
     case 180:
-        //temporary implemented by 2*90
-        nineteen();
-        nineteen();
+        onehundredEighty();
         break;
     case 270:
-        //temporary implemented by 3*90
-        nineteen();
-        nineteen();
-        nineteen();
+        twohundredseventy();
         break;
     default:
         cout<<"Invalid choice\n";

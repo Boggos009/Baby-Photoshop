@@ -22,3 +22,6 @@ cmake-build-*/
 # System files
 .DS_Store
 Thumbs.db
+
+#exe ignore
+CS213_A1_Part1_SectionNum_20250113_20250125_2025247_20250513.exe
