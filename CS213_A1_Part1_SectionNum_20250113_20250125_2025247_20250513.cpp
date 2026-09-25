@@ -99,7 +99,7 @@ void FlipImage()
 
 
 // Filter 6
-void nineteen()
+void nineteenRotation()
 {
     Image img2(currentImg.height, currentImg.width);
     
@@ -116,7 +116,7 @@ void nineteen()
     currentImg = img2;
 }
 
-void onehundredEighty()
+void onehundredEightyRotation()
 {
     Image img2(currentImg.width, currentImg.height);
     
@@ -133,7 +133,7 @@ void onehundredEighty()
     currentImg = img2;
 }
 
-void twohundredseventy()
+void twohundredseventyRotation()
 {
     Image img2(currentImg.height, currentImg.width);
     
@@ -157,13 +157,13 @@ void RotateImage()
     switch (degree)
     {
     case 90:
-        nineteen();
+        nineteenRotation();
         break;
     case 180:
-        onehundredEighty();
+        onehundredEightyRotation();
         break;
     case 270:
-        twohundredseventy();
+        twohundredseventyRotation();
         break;
     default:
         cout<<"Invalid choice\n";
