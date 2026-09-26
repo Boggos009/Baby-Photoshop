@@ -7,7 +7,7 @@
 Bavly Boules    20250113                1,4
 
 
-Bemwa Bakhet    20250125                2,6
+Bemwa Bakhet    20250125                2,6,10
 
 
 Zeyad Sayed     20250247                3,15
@@ -29,8 +29,25 @@ int showMenu();
 void Exit();
 void ChooseImg();
 void Saving();
-
-
+int dy [9] = {-1 , -1 , -1 , 0 , 0 , 0 , 1 , 1 , 1};
+int dx [9] = {-1 ,  0 ,  1 ,-1 , 0 , 1 ,-1 , 0 , 1};
+//for smoothing 
+int gaussianKernel[9] = {
+    1,2,1,
+    2,4,2,
+    1,2,1
+};
+//sobel technique for edge detection
+int sobelgxKernel[9] = {
+    -1 , 0 , 1,
+    -2 , 0 , 2,
+    -1 , 0 , 1
+};
+int sobelgyKernel[9] = {
+    -1 , -2 , -1,
+    0 , 0 , 0,
+    1 , 2 , 1
+};
 
 //Filters Functions
 
@@ -196,9 +213,84 @@ void Merge()
 
 
 // Filter 10
+
+//need to smooth the image first to reduce the noise --> guassian blur
+Image GuassianBlur()
+{
+    Image img2(currentImg.width , currentImg.height);
+    for(int y= 0;y<currentImg.height;y++)
+    {
+        for(int x=0;x<currentImg.width;x++)
+        {
+            for(int k=0;k<currentImg.channels;k++)
+            {
+                int avg = 0;
+                for(int d=0;d<9;d++)
+                {
+                    int nx = x+dx[d] , ny = y+dy[d];
+                    if(nx<0||ny<0||nx>=currentImg.width||ny>=currentImg.height)
+                        continue;
+                    avg+=(currentImg(nx,ny,k)*gaussianKernel[d]);
+                }
+                avg/=16;
+                avg = max(0, avg);
+                avg = min(255 , avg);
+                img2(x,y,k) = avg;
+            }
+        }
+    }
+    return img2;
+}
+
+
+
 void DetectEdges()
 {
-    cout<<"Will be Implemented Soon....\n";
+    cout<<"choose whether you want to smooth it first or without smoothing (0 for no / 1 for yes)\n";
+    int op;cin>>op;
+    if(op)
+        currentImg = GuassianBlur();
+    Image img2(currentImg.width , currentImg.height);
+
+    for(int y= 0;y<currentImg.height;y++)
+    {
+        for(int x=0;x<currentImg.width;x++)
+        {
+            int avg = 0;
+            int gx = 0 , gy= 0;
+            for(int k=0;k<currentImg.channels;k++)
+            {
+                for(int d=0;d<9;d++)
+                {
+                    int nx = x+dx[d] , ny = y+dy[d];
+                    if(nx<0||ny<0||nx>=currentImg.width||ny>=currentImg.height)
+                        continue;
+                    gx+=(currentImg(nx,ny,k))*sobelgxKernel[d];
+                    gy+=(currentImg(nx,ny,k))*sobelgyKernel[d];
+                }
+                int magnitude = sqrt(gx*gx+gy*gy);
+                avg+=magnitude;
+            }
+            avg/=currentImg.channels;
+            
+            if(avg>=100)
+            {
+                img2(x,y,0) = 255;
+                img2(x,y,1) = 255;
+                img2(x,y,2) = 255;
+            }
+            
+            else
+            {
+                img2(x,y,0) = 0;
+                img2(x,y,1) = 0;
+                img2(x,y,2) = 0;
+            }
+            
+        }
+    }
+    currentImg = img2;
+    Saving();
 }
 
 
