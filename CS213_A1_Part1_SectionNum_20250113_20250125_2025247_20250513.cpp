@@ -4,7 +4,7 @@
 /*
     Name            ID      Section     What he did
 
-Bavly Boules    20250113                1,4
+Bavly Boules    20250113                1
 
 
 Bemwa Bakhet    20250125                2,6,10
@@ -54,7 +54,32 @@ int sobelgyKernel[9] = {
 //Filter 1 
 void GrayscaleConversion()
 {
-    cout<<"Will be Implemented Soon....\n";
+    
+    for (int i = 0; i < currentImg.width; i++)
+    {
+        for ( int j = 0; j < currentImg.height; j++) 
+        {
+        
+            int avg = 0;
+            
+            for (int k = 0; k < currentImg.channels; k++)
+            {
+                avg += currentImg(i, j, k);
+			}
+            
+            avg /= 3;
+            
+            for (int k = 0; k < currentImg.channels; k++)
+            {
+				currentImg(i, j, k) = avg;
+            }
+
+        }
+
+    }
+
+	Saving();
+
 }
 
 
@@ -108,11 +133,76 @@ void AddingFrame()
 }
 
 
-// Filter 5
+void FlipHorizontal() {
+
+    for (int y = 0; y < currentImg.height; y++) {
+
+        for (int x = 0; x < currentImg.width / 2; x++) {
+
+            for (int k = 0; k < currentImg.channels; k++) {
+
+                unsigned char temp = currentImg(x, y, k);
+                currentImg(x, y, k) = currentImg(currentImg.width - 1 - x, y, k);
+                currentImg(currentImg.width - 1 - x, y, k) = temp;
+            
+            }
+        
+        }
+    
+    }
+
+}
+
+
+
+void FlipVertical() {
+
+    for (int i = 0; i < currentImg.height / 2; i++) {
+
+        for (int j = 0; j < currentImg.width; j++){
+
+            for (int k = 0; k < currentImg.channels; k++) {
+
+                unsigned char temp = currentImg(j, i, k);
+                currentImg(j, i, k) = currentImg(j, currentImg.height - 1 - i, k);
+                currentImg(j, currentImg.height - 1 - i, k) = temp;
+            
+            }
+        
+        }
+    
+    }
+
+}
+
+
+
 void FlipImage()
 {
-    cout<<"Will be Implemented Soon....\n";
+    
+    cout << "Choose flip direction (1 = Horizontal / 2 = Vertical)\n";
+    int choice; cin >> choice;
+    
+    switch (choice) {
+
+    case 1:
+        FlipHorizontal();
+        break;
+    
+    case 2:
+        FlipVertical();
+        break;
+    
+    default:
+        cout << "Invalid choice\n";
+        return;
+
+    }
+
+    Saving();
+
 }
+
 
 
 // Filter 6
