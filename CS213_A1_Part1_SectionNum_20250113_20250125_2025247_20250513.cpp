@@ -30,6 +30,7 @@ void Exit();
 void ChooseImg();
 void Saving();
 void ContinueOrNew();
+bool RevertChoice(Image& backup);
 int dy [9] = {-1 , -1 , -1 , 0 , 0 , 0 , 1 , 1 , 1};
 int dx [9] = {-1 ,  0 ,  1 ,-1 , 0 , 1 ,-1 , 0 , 1};
 //for smoothing 
@@ -62,6 +63,7 @@ void GrayscaleConversion()
 //Filter 2
 void BlackandWhite()
 {
+    Image backup = currentImg;
     for(int i=0;i<currentImg.width;i++)
     {
         for(int j=0;j<currentImg.height;j++)
@@ -81,6 +83,7 @@ void BlackandWhite()
                 currentImg(i,j,k) = avg;
         }
     }
+    if (RevertChoice(backup))
     Saving();
 }
 
@@ -88,6 +91,7 @@ void BlackandWhite()
 // Filter 3
 void InvertImage()
 {
+    Image backup = currentImg;
     for(int i=0;i<currentImg.width;i++)
     {
         for(int j=0;j<currentImg.height;j++)
@@ -98,6 +102,7 @@ void InvertImage()
 
         }
     }
+    if (RevertChoice(backup))
     Saving();
 }
 
@@ -105,7 +110,10 @@ void InvertImage()
 // Filter 4
 void AddingFrame()
 {
+    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
+    if (RevertChoice(backup))
+    Saving();
 }
 
 
@@ -113,12 +121,14 @@ void AddingFrame()
 void FlipImage()
 {
     cout<<"Will be Implemented Soon....\n";
+
 }
 
 
 // Filter 6
 void ninetyRotation()
 {
+    
     Image img2(currentImg.height, currentImg.width);
     
     for(int y=0;y<currentImg.height;y++)
@@ -131,11 +141,13 @@ void ninetyRotation()
             }
         }
     }
+  
     currentImg = img2;
 }
 
 void onehundredEightyRotation()
 {
+    
     Image img2(currentImg.width, currentImg.height);
     
     for(int y=0;y<currentImg.height;y++)
@@ -170,6 +182,8 @@ void twohundredseventyRotation()
 }
 void RotateImage()
 {
+
+    Image backup = currentImg;
     cout<<"Choose the degree of rotating (90/180/270)\n";
     int degree;cin>>degree;
     switch (degree)
@@ -188,6 +202,8 @@ void RotateImage()
         return;
         break;
     }
+    
+    if ( RevertChoice(backup))
     Saving();
 }
 
@@ -195,21 +211,30 @@ void RotateImage()
 // Filter 7
 void DarkandLight()
 {
+    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
+    if (RevertChoice(backup))
+    Saving();
 }
 
 
 // Filter 8
 void Resize()
 {
+    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
+    if (RevertChoice(backup))
+    Saving();
 }
 
 
 // Filter 9
 void Merge()
 {
+    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
+    if (RevertChoice(backup))
+    Saving();
 }
 
 
@@ -298,33 +323,46 @@ void DetectEdges()
 // Filter 11
 void Crop()
 {
+    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
+    if (RevertChoice(backup))
+    Saving();
 }
 
 
 // Filter 12
 void Blur()
 {
+    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
+    if (RevertChoice(backup))
+    Saving();
 }
 
 
 // Filter 13
 void Sunlight()
 {
+    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
+    if (RevertChoice(backup))
+    Saving();
 }
 
 // Filter 14
 void OldTv()
 {
+    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
+    if (RevertChoice(backup))
+    Saving();
 }
 
 
 // Filter 15
 void PurpleWano()
 {
+    Image backup = currentImg;
     for(int i=0;i<currentImg.width;i++)
     {
         for(int j=0;j<currentImg.height;j++)
@@ -347,6 +385,7 @@ void PurpleWano()
 
         }
     }
+    if (RevertChoice(backup))
     Saving();
 }
 
@@ -354,7 +393,10 @@ void PurpleWano()
 // Filter 16
 void Infrared()
 {
+    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
+    if (RevertChoice(backup))
+    Saving();
 }
 
 
@@ -441,6 +483,22 @@ void Saving()
         currentImg.saveImage(currentFile);
 
     cout<<"Image saved successfully\n";
+}
+
+
+// To revert image after filtering to the previous state, or keep the changes.
+bool RevertChoice(Image& backup)
+{
+    cout << "Keep this filter's result, or revert to before it? (1 = Keep / 2 = Revert)\n";
+    int choice; cin >> choice;
+
+    if (choice == 2)
+    {
+        currentImg = backup;
+        cout << "Reverted to the image before this filter.\n";
+        return false;
+    }
+    return true;
 }
 
 bool redirection(int op)
