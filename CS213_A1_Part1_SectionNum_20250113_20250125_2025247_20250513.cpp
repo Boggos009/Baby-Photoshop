@@ -4,7 +4,7 @@
 /*
     Name            ID      Section     What he did
 
-Bavly Boules    20250113                1,4
+Bavly Boules    20250113                1, 5
 
 
 Bemwa Bakhet    20250125                2,6,10
@@ -21,14 +21,15 @@ Martin Rashad   20250513                4,8
 using namespace std;
 
 Image currentImg;
-string currentFIle="";
+string currentFile="";
 
 //some definitions
-bool rediriction(int op);
+bool redirection(int op);
 int showMenu();
 void Exit();
 void ChooseImg();
 void Saving();
+void ContinueOrNew();
 int dy [9] = {-1 , -1 , -1 , 0 , 0 , 0 , 1 , 1 , 1};
 int dx [9] = {-1 ,  0 ,  1 ,-1 , 0 , 1 ,-1 , 0 , 1};
 //for smoothing 
@@ -116,7 +117,7 @@ void FlipImage()
 
 
 // Filter 6
-void nineteenRotation()
+void ninetyRotation()
 {
     Image img2(currentImg.height, currentImg.width);
     
@@ -174,7 +175,7 @@ void RotateImage()
     switch (degree)
     {
     case 90:
-        nineteenRotation();
+        ninetyRotation();
         break;
     case 180:
         onehundredEightyRotation();
@@ -215,7 +216,7 @@ void Merge()
 // Filter 10
 
 //need to smooth the image first to reduce the noise --> guassian blur
-Image GuassianBlur()
+Image GaussianBlur()
 {
     Image img2(currentImg.width , currentImg.height);
     for(int y= 0;y<currentImg.height;y++)
@@ -249,7 +250,7 @@ void DetectEdges()
     cout<<"choose whether you want to smooth it first or without smoothing (0 for no / 1 for yes)\n";
     int op;cin>>op;
     if(op)
-        currentImg = GuassianBlur();
+        currentImg = GaussianBlur();
     Image img2(currentImg.width , currentImg.height);
 
     for(int y= 0;y<currentImg.height;y++)
@@ -363,9 +364,17 @@ int main()
 {
     ChooseImg();
     int op;
-    while ((op = showMenu())<=16)
+    while ((op = showMenu()) <= 16)
     {
-        rediriction(op);
+        if (op < 0)
+        {
+            cout << "Invalid choice. Please choose a number from 0 to 16.\n";
+            system("pause");
+            continue;
+        }
+        redirection(op);
+        if (op != 0) 
+            ContinueOrNew();
         system("pause");
     }
     Exit();
@@ -376,29 +385,65 @@ int main()
 void ChooseImg()
 {
     cout<<"Choose an image please with any of the following extensions: (.JPG, .JPEG, .BMP, .PNG, .TGA)\n";
-    string name;cin>>name;
-    currentImg.loadNewImage(name);
-    currentFIle = name;
+    while (true)
+    {
+        string name;
+        cin >> name;
+        try
+        {
+            currentImg.loadNewImage(name);
+            currentFile = name;
+            return;
+        }
+        catch (const std::exception& e)
+        {
+            cout << "Couldn't load the image. Please enter a valid existing image filename.\n";
+        }
+    }
+}
+
+// Continue working with the current image, or load a new one?
+void ContinueOrNew()
+{
+    cout << "Continue working with the current image, or load a new one? (1 = Continue / 2 = Load new)\n";
+    int choice; cin >> choice;
+
+    if (choice == 2)
+        ChooseImg();
 }
 
 //saving options (Edit the current image, or create a new one with the same edits.)
 void Saving()
 {
-    cout<<"Would you like to edit the current image or create a new one with these edits?(0 for edit - one for create another one)\n";
+    cout<<"Would you like to edit the current image or create a new one with these edits?(0 for edit - 1 for create another one)\n";
     int op;
     cin>>op;
+
     if(op)
     {
-        cout<<"Please enter the new image's name: ";
-        string name;cin>>name;
-        currentImg.saveImage(name);
+        bool saved = false;
+        while (!saved)
+        {
+            cout<<"Please enter the new image's name: ";
+            string name; cin>>name;
+            try
+            {
+                currentImg.saveImage(name);
+                saved = true;
+            }
+            catch (const std::exception& e)
+            {
+                cout << "Couldn't save — please try a valid filename with a supported extension.\n";
+            }
+        }
     }
     else
-        currentImg.saveImage(currentFIle);
+        currentImg.saveImage(currentFile);
+
     cout<<"Image saved successfully\n";
 }
 
-bool rediriction(int op)
+bool redirection(int op)
 {
     switch (op)
     {
@@ -499,7 +544,7 @@ int showMenu()
     cout<<"\t\t----------------------------\n";
     cout<<"\t\tWelcome to Baby Photoshop v0";
     if(currentImg.imageData !=nullptr)
-        cout<<"\t\tCurrent Image: "<<currentFIle;
+        cout<<"\t\tCurrent Image: "<<currentFile;
     cout<<"\n\t\t----------------------------\n";
     cout<<"\t\tChoose one of the following options:\n";
     cout<<"\t\t----------------------------\n";
