@@ -60,7 +60,34 @@ int sobelgyKernel[9] = {
 //Filter 1 
 void GrayscaleConversion()
 {
-    cout<<"Will be Implemented Soon....\n";
+    Image backup = currentImg;
+    
+    for (int i = 0; i < currentImg.width; i++)
+    {
+        for ( int j = 0; j < currentImg.height; j++) 
+        {
+        
+            int avg = 0;
+            
+            for (int k = 0; k < currentImg.channels; k++)
+            {
+                avg += currentImg(i, j, k);
+			}
+            
+            avg /= 3;
+            
+            for (int k = 0; k < currentImg.channels; k++)
+            {
+				currentImg(i, j, k) = avg;
+            }
+
+        }
+
+    }
+
+    if (RevertChoice(backup))
+        Saving();
+
 }
 
 
@@ -88,7 +115,7 @@ void BlackandWhite()
         }
     }
     if (RevertChoice(backup))
-    Saving();
+        Saving();
 }
 
 
@@ -107,7 +134,7 @@ void InvertImage()
         }
     }
     if (RevertChoice(backup))
-    Saving();
+        Saving();
 }
 
 
@@ -123,7 +150,50 @@ void AddingFrame()
     else if (frameType == 1) { ornateframe(); }
     else { cout << "Invalid frame type." << endl; }
     if (RevertChoice(backup))
-    Saving();
+        Saving();
+}
+
+
+void FlipHorizontal() {
+
+    for (int y = 0; y < currentImg.height; y++) {
+
+        for (int x = 0; x < currentImg.width / 2; x++) {
+
+            for (int k = 0; k < currentImg.channels; k++) {
+
+                unsigned char temp = currentImg(x, y, k);
+                currentImg(x, y, k) = currentImg(currentImg.width - 1 - x, y, k);
+                currentImg(currentImg.width - 1 - x, y, k) = temp;
+            
+            }
+        
+        }
+    
+    }
+
+}
+
+
+
+void FlipVertical() {
+
+    for (int i = 0; i < currentImg.height / 2; i++) {
+
+        for (int j = 0; j < currentImg.width; j++){
+
+            for (int k = 0; k < currentImg.channels; k++) {
+
+                unsigned char temp = currentImg(j, i, k);
+                currentImg(j, i, k) = currentImg(j, currentImg.height - 1 - i, k);
+                currentImg(j, currentImg.height - 1 - i, k) = temp;
+            
+            }
+        
+        }
+    
+    }
+
 }
         void ornateframe()
 {
@@ -219,18 +289,39 @@ void classicframe()
 }
 
 
-// Filter 5
+
 void FlipImage()
 {
-    cout<<"Will be Implemented Soon....\n";
+    Image backup = currentImg;
+    cout << "Choose flip direction (1 = Horizontal / 2 = Vertical)\n";
+    int choice; cin >> choice;
+    
+    switch (choice) {
+
+    case 1:
+        FlipHorizontal();
+        break;
+    
+    case 2:
+        FlipVertical();
+        break;
+    
+    default:
+        cout << "Invalid choice\n";
+        return;
+
+    }
+
+    if (RevertChoice(backup))
+        Saving();
 
 }
+
 
 
 // Filter 6
 void ninetyRotation()
 {
-    
     Image img2(currentImg.height, currentImg.width);
     
     for(int y=0;y<currentImg.height;y++)
@@ -243,13 +334,11 @@ void ninetyRotation()
             }
         }
     }
-  
     currentImg = img2;
 }
 
 void onehundredEightyRotation()
 {
-    
     Image img2(currentImg.width, currentImg.height);
     
     for(int y=0;y<currentImg.height;y++)
@@ -284,7 +373,6 @@ void twohundredseventyRotation()
 }
 void RotateImage()
 {
-
     Image backup = currentImg;
     cout<<"Choose the degree of rotating (90/180/270)\n";
     int degree;cin>>degree;
@@ -304,9 +392,8 @@ void RotateImage()
         return;
         break;
     }
-    
-    if ( RevertChoice(backup))
-    Saving();
+    if (RevertChoice(backup))
+        Saving();
 }
 
 
@@ -316,7 +403,7 @@ void DarkandLight()
     Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
     if (RevertChoice(backup))
-    Saving();
+        Saving();
 }
 
 
@@ -340,64 +427,7 @@ void Resize()
         cout << "Invalid choice." << endl;
     }
     if (RevertChoice(backup))
-    Saving();
-    }
-    void resizeImage1()
-{
-    Image backup = currentImg;
-    int newWidth, newHeight;
-
-    cout << "Enter new width: ";
-    cin >> newWidth;
-    cout << "Enter new height: ";
-    cin >> newHeight;
-
-    Image resizedImage1(newWidth, newHeight);
-
-    for (int i = 0; i < newWidth; i++)
-    {
-        for (int j = 0; j < newHeight; j++)
-        {
-            for (int k = 0; k < 3; k++)
-            {
-                int originalX = i * currentImg.width / newWidth;
-                int originalY = j * currentImg.height / newHeight;
-                resizedImage1(i, j, k) = currentImg(originalX, originalY, k);
-            }
-        }
-    }
-
-    currentImg = resizedImage1;
-}
-
-/*------------------------------------------------------------------------*/
-
-void resizeImage2()
-{
-    Image backup = currentImg;
-    double scaleFactor;
-    cout << "Enter scale factor: ";
-    cin >> scaleFactor;
-
-    int newWidth = currentImg.width * scaleFactor;
-    int newHeight = currentImg.height * scaleFactor;
-
-    Image resizedImage2(newWidth, newHeight);
-
-    for (int i = 0; i < newWidth; i++)
-    {
-        for (int j = 0; j < newHeight; j++)
-        {
-            for (int k = 0; k < 3; k++)
-            {
-                int originalX = i * currentImg.width / newWidth;
-                int originalY = j * currentImg.height / newHeight;
-                resizedImage2(i, j, k) = currentImg(originalX, originalY, k);
-            }
-        }
-    }
-
-    currentImg = resizedImage2;
+        Saving();
 }
 
 
@@ -407,7 +437,7 @@ void Merge()
     Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
     if (RevertChoice(backup))
-    Saving();
+        Saving();
 }
 
 
@@ -499,7 +529,7 @@ void Crop()
     Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
     if (RevertChoice(backup))
-    Saving();
+        Saving();
 }
 
 
@@ -509,7 +539,7 @@ void Blur()
     Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
     if (RevertChoice(backup))
-    Saving();
+        Saving();
 }
 
 
@@ -519,7 +549,7 @@ void Sunlight()
     Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
     if (RevertChoice(backup))
-    Saving();
+        Saving();
 }
 
 // Filter 14
@@ -528,7 +558,7 @@ void OldTv()
     Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
     if (RevertChoice(backup))
-    Saving();
+        Saving();
 }
 
 
@@ -559,7 +589,7 @@ void PurpleWano()
         }
     }
     if (RevertChoice(backup))
-    Saving();
+        Saving();
 }
 
 
@@ -569,7 +599,7 @@ void Infrared()
     Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
     if (RevertChoice(backup))
-    Saving();
+        Saving();
 }
 
 
@@ -588,7 +618,7 @@ int main()
             continue;
         }
         redirection(op);
-        if (op != 0) 
+        if (op != 0)
             ContinueOrNew();
         system("pause");
     }
@@ -617,7 +647,6 @@ void ChooseImg()
     }
 }
 
-// Continue working with the current image, or load a new one?
 void ContinueOrNew()
 {
     cout << "Continue working with the current image, or load a new one? (1 = Continue / 2 = Load new)\n";
@@ -648,7 +677,7 @@ void Saving()
             }
             catch (const std::exception& e)
             {
-                cout << "Couldn't save — please try a valid filename with a supported extension.\n";
+                cout << "Couldn't save - please try a valid filename with a supported extension.\n";
             }
         }
     }
@@ -658,8 +687,6 @@ void Saving()
     cout<<"Image saved successfully\n";
 }
 
-
-// To revert image after filtering to the previous state, or keep the changes.
 bool RevertChoice(Image& backup)
 {
     cout << "Keep this filter's result, or revert to before it? (1 = Keep / 2 = Revert)\n";
