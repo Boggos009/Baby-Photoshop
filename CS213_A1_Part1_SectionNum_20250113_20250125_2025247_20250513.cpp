@@ -427,8 +427,67 @@ void Resize()
         cout << "Invalid choice." << endl;
     }
     if (RevertChoice(backup))
+    Saving();
+    }
+    void resizeImage1()
+{
+    Image backup = currentImg;
+    int newWidth, newHeight;
+
+    cout << "Enter new width: ";
+    cin >> newWidth;
+    cout << "Enter new height: ";
+    cin >> newHeight;
+
+    Image resizedImage1(newWidth, newHeight);
+
+    for (int i = 0; i < newWidth; i++)
+    {
+        for (int j = 0; j < newHeight; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                int originalX = i * currentImg.width / newWidth;
+                int originalY = j * currentImg.height / newHeight;
+                resizedImage1(i, j, k) = currentImg(originalX, originalY, k);
+            }
+        }
+    }
+
+    currentImg = resizedImage1;
+}
+
+/*------------------------------------------------------------------------*/
+
+void resizeImage2()
+{
+    Image backup = currentImg;
+    double scaleFactor;
+    cout << "Enter scale factor: ";
+    cin >> scaleFactor;
+
+    int newWidth = currentImg.width * scaleFactor;
+    int newHeight = currentImg.height * scaleFactor;
+
+    Image resizedImage2(newWidth, newHeight);
+
+    for (int i = 0; i < newWidth; i++)
+    {
+        for (int j = 0; j < newHeight; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                int originalX = i * currentImg.width / newWidth;
+                int originalY = j * currentImg.height / newHeight;
+                resizedImage2(i, j, k) = currentImg(originalX, originalY, k);
+            }
+        }
+    }
+
+    currentImg = resizedImage2;
         Saving();
 }
+
 
 
 // Filter 9
