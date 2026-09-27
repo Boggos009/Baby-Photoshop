@@ -33,6 +33,8 @@ void ContinueOrNew();
 bool RevertChoice(Image& backup);
 void classicframe();
 void ornateframe();
+void resizeImage1();
+void resizeImage2();
 int dy [9] = {-1 , -1 , -1 , 0 , 0 , 0 , 1 , 1 , 1};
 int dx [9] = {-1 ,  0 ,  1 ,-1 , 0 , 1 ,-1 , 0 , 1};
 //for smoothing 
@@ -322,9 +324,80 @@ void DarkandLight()
 void Resize()
 {
     Image backup = currentImg;
-    cout<<"Will be Implemented Soon....\n";
+    cout << "enter the way of resizing the image (0 for writing the new width and height, 1 for writing the scale factor): ";
+    int choice;
+    cin >> choice;
+    if (choice == 0)
+    {
+        resizeImage1();
+    }
+    else if (choice == 1)
+    {
+        resizeImage2();
+    }
+    else
+    {
+        cout << "Invalid choice." << endl;
+    }
     if (RevertChoice(backup))
     Saving();
+    }
+    void resizeImage1()
+{
+    Image backup = currentImg;
+    int newWidth, newHeight;
+
+    cout << "Enter new width: ";
+    cin >> newWidth;
+    cout << "Enter new height: ";
+    cin >> newHeight;
+
+    Image resizedImage1(newWidth, newHeight);
+
+    for (int i = 0; i < newWidth; i++)
+    {
+        for (int j = 0; j < newHeight; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                int originalX = i * currentImg.width / newWidth;
+                int originalY = j * currentImg.height / newHeight;
+                resizedImage1(i, j, k) = currentImg(originalX, originalY, k);
+            }
+        }
+    }
+
+    currentImg = resizedImage1;
+}
+
+/*------------------------------------------------------------------------*/
+
+void resizeImage2()
+{
+    Image backup = currentImg;
+    double scaleFactor;
+    cout << "Enter scale factor: ";
+    cin >> scaleFactor;
+
+    int newWidth = currentImg.width * scaleFactor;
+    int newHeight = currentImg.height * scaleFactor;
+
+    Image resizedImage2(newWidth, newHeight);
+
+    for (int i = 0; i < newWidth; i++)
+    {
+        for (int j = 0; j < newHeight; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                int originalX = i * currentImg.width / newWidth;
+                int originalY = j * currentImg.height / newHeight;
+                resizedImage2(i, j, k) = currentImg(originalX, originalY, k);
+            }
+        }
+    }
+
+    currentImg = resizedImage2;
 }
 
 
