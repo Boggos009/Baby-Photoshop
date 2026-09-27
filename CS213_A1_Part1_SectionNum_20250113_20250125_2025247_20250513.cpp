@@ -31,6 +31,8 @@ void ChooseImg();
 void Saving();
 void ContinueOrNew();
 bool RevertChoice(Image& backup);
+void classicframe();
+void ornateframe();
 int dy [9] = {-1 , -1 , -1 , 0 , 0 , 0 , 1 , 1 , 1};
 int dx [9] = {-1 ,  0 ,  1 ,-1 , 0 , 1 ,-1 , 0 , 1};
 //for smoothing 
@@ -111,9 +113,107 @@ void InvertImage()
 void AddingFrame()
 {
     Image backup = currentImg;
-    cout<<"Will be Implemented Soon....\n";
+    int frameType;
+    cout << "Choose a frame type (0 for classic, 1 for ornate): ";
+    cin >> frameType;
+
+    if (frameType == 0) { classicframe(); }
+    else if (frameType == 1) { ornateframe(); }
+    else { cout << "Invalid frame type." << endl; }
     if (RevertChoice(backup))
     Saving();
+}
+        void ornateframe()
+{
+    Image backup = currentImg;
+    int thickness = 0, line = 0, blackframe = 0;
+
+    if (currentImg.width <= currentImg.height)
+    {
+        thickness = currentImg.width * 0.03;
+    }
+    else
+    {
+        thickness = currentImg.height * 0.03;
+    }
+
+    if (thickness < 1)
+    {
+        thickness = 1;
+    }
+
+    blackframe = thickness * 0.33;
+
+    Image ornateframe(currentImg.width + 2 * thickness, currentImg.height + 2 * thickness);
+
+    for (int i = 0; i < ornateframe.width; i++)
+    {
+        for (int j = 0; j < ornateframe.height; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                if (i < thickness || i >= ornateframe.width - thickness || j < thickness || j >= ornateframe.height - thickness)
+                {
+                    ornateframe(i, j, k) = 255;
+                }
+                else
+                {
+                    ornateframe(i, j, k) = currentImg(i - thickness, j - thickness, k);
+                }
+                if (i > blackframe && i < blackframe * 2 || j > blackframe && j < blackframe * 2 || i > ornateframe.width - blackframe * 2 && i < ornateframe.width - blackframe || j > ornateframe.height - blackframe * 2 && j < ornateframe.height - blackframe)
+                {
+                    ornateframe(i, j, k) = 0;
+                }
+            }
+        }
+    }
+    currentImg = ornateframe;
+}
+
+void classicframe()
+{
+    Image backup = currentImg;
+    int thickness = 0;
+
+    if (currentImg.width <= currentImg.height)
+    {
+        thickness = currentImg.width * 0.03;
+    }
+    else
+    {
+        thickness = currentImg.height * 0.03;
+    }
+
+    if (thickness < 1)
+    {
+        thickness = 1;
+    }
+
+    cout << "choose the frame colour (0 for black, 1 for white): ";
+    int colour;
+    cin >> colour;
+
+    Image classicframe(currentImg.width + 2 * thickness, currentImg.height + 2 * thickness);
+
+    for (int i = 0; i < classicframe.width; i++)
+    {
+        for (int j = 0; j < classicframe.height; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                if (i < thickness || i >= classicframe.width - thickness || j < thickness || j >= classicframe.height - thickness)
+                {
+                    classicframe(i, j, k) = 255 * colour;
+                }
+                else
+                {
+                    classicframe(i, j, k) = currentImg(i - thickness, j - thickness, k);
+                }
+            }
+        }
+    }
+    currentImg = classicframe;
+
 }
 
 
