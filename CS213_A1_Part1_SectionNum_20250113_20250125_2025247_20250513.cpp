@@ -4,7 +4,7 @@
 /*
     Name            ID      Section     What he did
 
-Bavly Boules    20250113                1, 5
+Bavly Boules    20250113                1,5
 
 
 Bemwa Bakhet    20250125                2,6,10
@@ -20,21 +20,18 @@ Martin Rashad   20250513                4,8
 
 using namespace std;
 
+//some global variables
 Image currentImg;
-string currentFile="";
+string currentFIle="";
+Image backupImg;
 
 //some definitions
-bool redirection(int op);
+bool rediriction(int op);
 int showMenu();
 void Exit();
 void ChooseImg();
 void Saving();
-void ContinueOrNew();
-bool RevertChoice(Image& backup);
-void classicframe();
-void ornateframe();
-void resizeImage1();
-void resizeImage2();
+void successFilterImplementation();
 int dy [9] = {-1 , -1 , -1 , 0 , 0 , 0 , 1 , 1 , 1};
 int dx [9] = {-1 ,  0 ,  1 ,-1 , 0 , 1 ,-1 , 0 , 1};
 //for smoothing 
@@ -60,8 +57,7 @@ int sobelgyKernel[9] = {
 //Filter 1 
 void GrayscaleConversion()
 {
-    Image backup = currentImg;
-    
+
     for (int i = 0; i < currentImg.width; i++)
     {
         for ( int j = 0; j < currentImg.height; j++) 
@@ -80,21 +76,15 @@ void GrayscaleConversion()
             {
 				currentImg(i, j, k) = avg;
             }
-
         }
-
     }
-
-    if (RevertChoice(backup))
-        Saving();
-
+    successFilterImplementation();
 }
 
 
 //Filter 2
 void BlackandWhite()
 {
-    Image backup = currentImg;
     for(int i=0;i<currentImg.width;i++)
     {
         for(int j=0;j<currentImg.height;j++)
@@ -114,15 +104,13 @@ void BlackandWhite()
                 currentImg(i,j,k) = avg;
         }
     }
-    if (RevertChoice(backup))
-        Saving();
+    successFilterImplementation();
 }
 
 
 // Filter 3
 void InvertImage()
 {
-    Image backup = currentImg;
     for(int i=0;i<currentImg.width;i++)
     {
         for(int j=0;j<currentImg.height;j++)
@@ -130,76 +118,59 @@ void InvertImage()
             currentImg(i,j,0)=255-currentImg(i, j, 0);
             currentImg(i,j,1)=255-currentImg(i, j, 1);
             currentImg(i,j,2)=255-currentImg(i, j, 2);
-
         }
     }
-    if (RevertChoice(backup))
-        Saving();
+    successFilterImplementation();
 }
 
 
 // Filter 4
-void AddingFrame()
+void classicframe()
 {
-    Image backup = currentImg;
-    int frameType;
-    cout << "Choose a frame type (0 for classic, 1 for ornate): ";
-    cin >> frameType;
-
-    if (frameType == 0) { classicframe(); }
-    else if (frameType == 1) { ornateframe(); }
-    else { cout << "Invalid frame type." << endl; }
-    if (RevertChoice(backup))
-        Saving();
-}
-
-
-void FlipHorizontal() {
-
-    for (int y = 0; y < currentImg.height; y++) {
-
-        for (int x = 0; x < currentImg.width / 2; x++) {
-
-            for (int k = 0; k < currentImg.channels; k++) {
-
-                unsigned char temp = currentImg(x, y, k);
-                currentImg(x, y, k) = currentImg(currentImg.width - 1 - x, y, k);
-                currentImg(currentImg.width - 1 - x, y, k) = temp;
-            
-            }
-        
-        }
-    
+    int thickness = 0;
+    if (currentImg.width <= currentImg.height)
+    {
+        thickness = currentImg.width * 0.03;
+    }
+    else
+    {
+        thickness = currentImg.height * 0.03;
     }
 
-}
-
-
-
-void FlipVertical() {
-
-    for (int i = 0; i < currentImg.height / 2; i++) {
-
-        for (int j = 0; j < currentImg.width; j++){
-
-            for (int k = 0; k < currentImg.channels; k++) {
-
-                unsigned char temp = currentImg(j, i, k);
-                currentImg(j, i, k) = currentImg(j, currentImg.height - 1 - i, k);
-                currentImg(j, currentImg.height - 1 - i, k) = temp;
-            
-            }
-        
-        }
-    
+    if (thickness < 1)
+    {
+        thickness = 1;
     }
 
+    cout << "choose the frame colour (0 for black, 1 for white): ";
+    int colour;
+    cin >> colour;
+
+    Image classicframe(currentImg.width + 2 * thickness, currentImg.height + 2 * thickness);
+
+    for (int i = 0; i < classicframe.width; i++)
+    {
+        for (int j = 0; j < classicframe.height; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                if (i < thickness || i >= classicframe.width - thickness || j < thickness || j >= classicframe.height - thickness)
+                {
+                    classicframe(i, j, k) = 255 * colour;
+                }
+                else
+                {
+                    classicframe(i, j, k) = currentImg(i - thickness, j - thickness, k);
+                }
+            }
+        }
+    }
+    currentImg = classicframe;
 }
-        void ornateframe()
+
+void ornateframe()
 {
-    Image backup = currentImg;
     int thickness = 0, line = 0, blackframe = 0;
-
     if (currentImg.width <= currentImg.height)
     {
         thickness = currentImg.width * 0.03;
@@ -240,64 +211,69 @@ void FlipVertical() {
         }
     }
     currentImg = ornateframe;
+    
 }
 
-void classicframe()
+void AddingFrame()
 {
-    Image backup = currentImg;
-    int thickness = 0;
 
-    if (currentImg.width <= currentImg.height)
+    int frameType;
+    cout << "Choose a frame type (0 for classic, 1 for ornate): ";
+    cin >> frameType;
+
+    if (frameType == 0) { classicframe(); }
+    else if (frameType == 1) { ornateframe(); }
+    else { cout << "Invalid frame type." << endl; return;}
+    successFilterImplementation();
+}
+
+
+
+// Filter 5
+void FlipVertical() {
+
+    for (int i = 0; i < currentImg.height / 2; i++)
     {
-        thickness = currentImg.width * 0.03;
-    }
-    else
-    {
-        thickness = currentImg.height * 0.03;
-    }
-
-    if (thickness < 1)
-    {
-        thickness = 1;
-    }
-
-    cout << "choose the frame colour (0 for black, 1 for white): ";
-    int colour;
-    cin >> colour;
-
-    Image classicframe(currentImg.width + 2 * thickness, currentImg.height + 2 * thickness);
-
-    for (int i = 0; i < classicframe.width; i++)
-    {
-        for (int j = 0; j < classicframe.height; j++)
+        for (int j = 0; j < currentImg.width; j++)
         {
-            for (int k = 0; k < 3; k++)
+            for (int k = 0; k < currentImg.channels; k++)
             {
-                if (i < thickness || i >= classicframe.width - thickness || j < thickness || j >= classicframe.height - thickness)
-                {
-                    classicframe(i, j, k) = 255 * colour;
-                }
-                else
-                {
-                    classicframe(i, j, k) = currentImg(i - thickness, j - thickness, k);
-                }
+                unsigned char temp = currentImg(j, i, k);
+                currentImg(j, i, k) = currentImg(j, currentImg.height - 1 - i, k);
+                currentImg(j, currentImg.height - 1 - i, k) = temp;
             }
         }
     }
-    currentImg = classicframe;
+}
+
+void FlipHorizontal() {
+
+    for (int y = 0; y < currentImg.height; y++) {
+
+        for (int x = 0; x < currentImg.width / 2; x++) {
+
+            for (int k = 0; k < currentImg.channels; k++) {
+
+                unsigned char temp = currentImg(x, y, k);
+                currentImg(x, y, k) = currentImg(currentImg.width - 1 - x, y, k);
+                currentImg(currentImg.width - 1 - x, y, k) = temp;
+            
+            }
+        
+        }
+    
+    }
 
 }
 
-
-
 void FlipImage()
 {
-    Image backup = currentImg;
+
     cout << "Choose flip direction (1 = Horizontal / 2 = Vertical)\n";
     int choice; cin >> choice;
     
-    switch (choice) {
-
+    switch (choice)
+    {
     case 1:
         FlipHorizontal();
         break;
@@ -309,15 +285,9 @@ void FlipImage()
     default:
         cout << "Invalid choice\n";
         return;
-
     }
-
-    if (RevertChoice(backup))
-        Saving();
-
+    successFilterImplementation();
 }
-
-
 
 // Filter 6
 void ninetyRotation()
@@ -340,7 +310,6 @@ void ninetyRotation()
 void onehundredEightyRotation()
 {
     Image img2(currentImg.width, currentImg.height);
-    
     for(int y=0;y<currentImg.height;y++)
     {
         for(int x=0;x<currentImg.width;x++)
@@ -369,11 +338,9 @@ void twohundredseventyRotation()
         }
     }
     currentImg = img2;
-
 }
 void RotateImage()
 {
-    Image backup = currentImg;
     cout<<"Choose the degree of rotating (90/180/270)\n";
     int degree;cin>>degree;
     switch (degree)
@@ -392,55 +359,21 @@ void RotateImage()
         return;
         break;
     }
-    if (RevertChoice(backup))
-        Saving();
+    successFilterImplementation();
 }
 
 
 // Filter 7
 void DarkandLight()
 {
-    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
-    if (RevertChoice(backup))
-        Saving();
 }
 
 
 // Filter 8
-void Resize()
+void resizing(int newWidth , int newHeight )
 {
-    Image backup = currentImg;
-    cout << "enter the way of resizing the image (0 for writing the new width and height, 1 for writing the scale factor): ";
-    int choice;
-    cin >> choice;
-    if (choice == 0)
-    {
-        resizeImage1();
-    }
-    else if (choice == 1)
-    {
-        resizeImage2();
-    }
-    else
-    {
-        cout << "Invalid choice." << endl;
-    }
-    if (RevertChoice(backup))
-    Saving();
-    }
-    void resizeImage1()
-{
-    Image backup = currentImg;
-    int newWidth, newHeight;
-
-    cout << "Enter new width: ";
-    cin >> newWidth;
-    cout << "Enter new height: ";
-    cin >> newHeight;
-
     Image resizedImage1(newWidth, newHeight);
-
     for (int i = 0; i < newWidth; i++)
     {
         for (int j = 0; j < newHeight; j++)
@@ -453,57 +386,46 @@ void Resize()
             }
         }
     }
-
     currentImg = resizedImage1;
 }
 
-/*------------------------------------------------------------------------*/
-
-void resizeImage2()
+void Resize()
 {
-    Image backup = currentImg;
-    double scaleFactor;
-    cout << "Enter scale factor: ";
-    cin >> scaleFactor;
 
-    int newWidth = currentImg.width * scaleFactor;
-    int newHeight = currentImg.height * scaleFactor;
-
-    Image resizedImage2(newWidth, newHeight);
-
-    for (int i = 0; i < newWidth; i++)
+    cout << "enter the way of resizing the image (0 for writing the new width and height, 1 for writing the scale factor): ";
+    int choice;
+    cin >> choice;
+    int width = currentImg.width , height = currentImg.height;
+    if (choice == 0)
     {
-        for (int j = 0; j < newHeight; j++)
-        {
-            for (int k = 0; k < 3; k++)
-            {
-                int originalX = i * currentImg.width / newWidth;
-                int originalY = j * currentImg.height / newHeight;
-                resizedImage2(i, j, k) = currentImg(originalX, originalY, k);
-            }
-        }
+        cout<<"Enter new width: ";cin>>width;cout<<"\n";
+        cout<<"Enter new height: ";cin>>height;cout<<"\n";
     }
-
-    currentImg = resizedImage2;
-        Saving();
+    else if (choice == 1)
+    {
+        double scale;cin>>scale;
+        width*=scale;height*=scale;
+    }
+    else
+    {
+        cout << "Invalid choice." << endl;
+    }
+    resizing(width , height);
+    successFilterImplementation();
 }
-
 
 
 // Filter 9
 void Merge()
 {
-    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
-    if (RevertChoice(backup))
-        Saving();
 }
 
 
 // Filter 10
 
 //need to smooth the image first to reduce the noise --> guassian blur
-Image GaussianBlur()
+Image GuassianBlur()
 {
     Image img2(currentImg.width , currentImg.height);
     for(int y= 0;y<currentImg.height;y++)
@@ -537,7 +459,7 @@ void DetectEdges()
     cout<<"choose whether you want to smooth it first or without smoothing (0 for no / 1 for yes)\n";
     int op;cin>>op;
     if(op)
-        currentImg = GaussianBlur();
+        currentImg = GuassianBlur();
     Image img2(currentImg.width , currentImg.height);
 
     for(int y= 0;y<currentImg.height;y++)
@@ -578,53 +500,40 @@ void DetectEdges()
         }
     }
     currentImg = img2;
-    Saving();
+    successFilterImplementation();
 }
 
 
 // Filter 11
 void Crop()
 {
-    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
-    if (RevertChoice(backup))
-        Saving();
 }
 
 
 // Filter 12
 void Blur()
 {
-    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
-    if (RevertChoice(backup))
-        Saving();
 }
 
 
 // Filter 13
 void Sunlight()
 {
-    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
-    if (RevertChoice(backup))
-        Saving();
 }
 
 // Filter 14
 void OldTv()
 {
-    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
-    if (RevertChoice(backup))
-        Saving();
 }
 
 
 // Filter 15
 void PurpleWano()
 {
-    Image backup = currentImg;
     for(int i=0;i<currentImg.width;i++)
     {
         for(int j=0;j<currentImg.height;j++)
@@ -647,18 +556,14 @@ void PurpleWano()
 
         }
     }
-    if (RevertChoice(backup))
-        Saving();
+    successFilterImplementation();
 }
 
 
 // Filter 16
 void Infrared()
 {
-    Image backup = currentImg;
     cout<<"Will be Implemented Soon....\n";
-    if (RevertChoice(backup))
-        Saving();
 }
 
 
@@ -668,17 +573,9 @@ int main()
 {
     ChooseImg();
     int op;
-    while ((op = showMenu()) <= 16)
+    while ((op = showMenu())<=16)
     {
-        if (op < 0)
-        {
-            cout << "Invalid choice. Please choose a number from 0 to 16.\n";
-            system("pause");
-            continue;
-        }
-        redirection(op);
-        if (op != 0)
-            ContinueOrNew();
+        rediriction(op);
         system("pause");
     }
     Exit();
@@ -686,164 +583,155 @@ int main()
 
 
 //Auxiliary Funtions
+void successFilterImplementation()
+{
+    cout<<"Filter has been implemented successfully.\n";
+}
+
 void ChooseImg()
 {
     cout<<"Choose an image please with any of the following extensions: (.JPG, .JPEG, .BMP, .PNG, .TGA)\n";
-    while (true)
-    {
-        string name;
-        cin >> name;
-        try
-        {
-            currentImg.loadNewImage(name);
-            currentFile = name;
-            return;
-        }
-        catch (const std::exception& e)
-        {
-            cout << "Couldn't load the image. Please enter a valid existing image filename.\n";
-        }
-    }
-}
-
-void ContinueOrNew()
-{
-    cout << "Continue working with the current image, or load a new one? (1 = Continue / 2 = Load new)\n";
-    int choice; cin >> choice;
-
-    if (choice == 2)
-        ChooseImg();
+    string name;cin>>name;
+    currentImg.loadNewImage(name);
+    currentFIle = name;
 }
 
 //saving options (Edit the current image, or create a new one with the same edits.)
 void Saving()
 {
-    cout<<"Would you like to edit the current image or create a new one with these edits?(0 for edit - 1 for create another one)\n";
+    cout<<"Would you like to edit the current image or create a new one with these edits?(0 for edit /1 for create another one)\n";
     int op;
     cin>>op;
-
     if(op)
     {
-        bool saved = false;
-        while (!saved)
-        {
-            cout<<"Please enter the new image's name: ";
-            string name; cin>>name;
-            try
-            {
-                currentImg.saveImage(name);
-                saved = true;
-            }
-            catch (const std::exception& e)
-            {
-                cout << "Couldn't save - please try a valid filename with a supported extension.\n";
-            }
-        }
+        cout<<"Please enter the new image's name: ";
+        string name;cin>>name;
+        currentImg.saveImage(name);
     }
     else
-        currentImg.saveImage(currentFile);
-
+        currentImg.saveImage(currentFIle);
     cout<<"Image saved successfully\n";
 }
 
-bool RevertChoice(Image& backup)
+void Undo()
 {
-    cout << "Keep this filter's result, or revert to before it? (1 = Keep / 2 = Revert)\n";
-    int choice; cin >> choice;
-
-    if (choice == 2)
+    if(backupImg.imageData!=nullptr)
     {
-        currentImg = backup;
-        cout << "Reverted to the image before this filter.\n";
-        return false;
+        currentImg = backupImg;
+        cout<<"Last filter removed successfully.\n";
     }
-    return true;
+    else
+        cout<<"Invalid operation\n";
 }
 
-bool redirection(int op)
+bool rediriction(int op)
 {
     switch (op)
     {
+    case -2:
+        system("cls");
+        Saving();
+        break;
+    case -1:
+        system("cls");
+        Undo();
+        break;
     case 0:
         system("cls");
         ChooseImg();
         break;
     case 1:
+        backupImg = currentImg;
         system("cls");
         GrayscaleConversion();
         break;
     
     case 2:
+        backupImg = currentImg;
         system("cls");
         BlackandWhite();
         break;
     
     case 3:
+        backupImg = currentImg;
         system("cls");
         InvertImage();
         break;
     
     case 4:
+        backupImg = currentImg;
         system("cls");
         AddingFrame();
         break;
     
     case 5:
+        backupImg = currentImg;
         system("cls");
         FlipImage();
         break;
     
     case 6:
+        backupImg = currentImg;
         system("cls");
         RotateImage();
         break;
     
     case 7:
+        backupImg = currentImg;
         system("cls");
         DarkandLight();
         break;
     
     case 8:
+        backupImg = currentImg;
         system("cls");
         Resize();
         break;
     
     case 9:
+        backupImg = currentImg;
         system("cls");
         Merge();
         break;
     
     case 10:
+        backupImg = currentImg;
         system("cls");
         DetectEdges();
         break;
     
     case 11:
+        backupImg = currentImg;
         system("cls");
         Crop();
         break;
     
     case 12:
+        backupImg = currentImg;
         system("cls");
         Blur();
         break;
     
     case 13:
+        backupImg = currentImg;
         system("cls");
         Sunlight();
         break;
     
     case 14:
+        backupImg = currentImg;
         system("cls");
         OldTv();
         break;
     
     case 15:
+        backupImg = currentImg;
         system("cls");
         PurpleWano();
         break;
     
     case 16:
+        backupImg = currentImg;
         system("cls");
         Infrared();
         break;
@@ -861,10 +749,12 @@ int showMenu()
     cout<<"\t\t----------------------------\n";
     cout<<"\t\tWelcome to Baby Photoshop v0";
     if(currentImg.imageData !=nullptr)
-        cout<<"\t\tCurrent Image: "<<currentFile;
+        cout<<"\t\tCurrent Image: "<<currentFIle;
     cout<<"\n\t\t----------------------------\n";
     cout<<"\t\tChoose one of the following options:\n";
     cout<<"\t\t----------------------------\n";
+    cout<<"Saving the current edits (press -2)\n";
+    cout<<"Undo the last filter (press -1 , valid for 1 time only)\n";
     cout<<"Load new image (press 0)\n";
     cout<<"Filter 1: Grayscale Conversion\n";
     cout<<"Filter 2: Black and White\n";
@@ -896,4 +786,3 @@ void Exit()
     cout << "\t\t" << setw(30) << "See you in the next time\n";
     cout<<"\t\t---------------------------------\n";
 }
-
