@@ -606,6 +606,13 @@ void Saving()
     {
         cout<<"Please enter the new image's name: ";
         string name;cin>>name;
+        int dot = name.find_last_of('.');
+        string extension = (dot==string::npos? "" : name.substr(dot , name.size()-dot));
+        if(dot==string::npos||(extension!="jpeg"&&extension!="jpg"&&extension!="bmp"&&extension!="png"&&extension!="tga"))
+        {
+            if(dot!=string::npos)name = name.substr(0 , dot)+".jpg";
+            else name+=".jpg";
+        }
         currentImg.saveImage(name);
     }
     else
@@ -781,6 +788,10 @@ int showMenu()
 
 void Exit()
 {
+    cout<<"Save your edits before exit? (1 for yes / 0 for no)\n";
+    int op;cin>>op;
+    if(op)
+        Saving();
     system("cls");
     cout<<"\t\t---------------------------------\n";
     cout << "\t\t" << setw(30) << "See you in the next time\n";
