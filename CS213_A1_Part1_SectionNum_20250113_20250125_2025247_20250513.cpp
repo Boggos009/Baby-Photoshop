@@ -485,16 +485,16 @@ void DetectEdges()
             
             if(avg>=100)
             {
-                img2(x,y,0) = 255;
-                img2(x,y,1) = 255;
-                img2(x,y,2) = 255;
+                img2(x,y,0) = 0;
+                img2(x,y,1) = 0;
+                img2(x,y,2) = 0;
             }
             
             else
             {
-                img2(x,y,0) = 0;
-                img2(x,y,1) = 0;
-                img2(x,y,2) = 0;
+                img2(x,y,0) = 255;
+                img2(x,y,1) = 255;
+                img2(x,y,2) = 255;
             }
             
         }
