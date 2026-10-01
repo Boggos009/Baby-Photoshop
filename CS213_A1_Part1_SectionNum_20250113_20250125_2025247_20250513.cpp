@@ -417,11 +417,31 @@ void Resize()
 
 // Filter 9
 
-Image linear_interpolation() {}
+Image Opacity(Image first, Image second, double opacity) {
 
-Image Merge_biggest(Image second , Image first) {}
+    for (int i = 0; i < first.width; i++) {
+        
+        for (int j = 0; j < first.height; j++) {
+            
+            for (int k = 0; k < first.channels; k++) {
+               
+                currentImg(i, j, k) = static_cast<unsigned char>(
+                    opacity * first(i, j, k) + (1 - opacity) * second(i, j, k)
+                );
 
-Image Merge_smallest(Image second , Image first) {}
+            }
+
+        }
+
+    }
+
+    return currentImg;
+
+}
+
+Image Merge_biggest(Image second , Image first , double opacity) {}
+
+Image Merge_smallest(Image second , Image first , double opacity) {}
 
 void Merge() {
     
@@ -435,12 +455,16 @@ void Merge() {
     int method;
     cin >> method;
 
+    cout << "Choose the opacity for the first image (0.0 to 1.0): ";
+    double opacity;
+    cin >> opacity;
+
     switch (method) {
         case 1:
-            currentImg = Merge_biggest(secondImage, currentImg);
+            currentImg = Merge_biggest(secondImage, currentImg, opacity);
             break;
         case 2:
-            currentImg = Merge_smallest(secondImage, currentImg);
+            currentImg = Merge_smallest(secondImage, currentImg, opacity);
             break;
         default:
             cout << "Invalid choice." << endl;
