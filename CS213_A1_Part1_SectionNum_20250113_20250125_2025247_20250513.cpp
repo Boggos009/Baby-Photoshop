@@ -416,9 +416,39 @@ void Resize()
 
 
 // Filter 9
-void Merge()
-{
-    cout<<"Will be Implemented Soon....\n";
+
+Image linear_interpolation() {}
+
+Image Merge_biggest(Image second , Image first) {}
+
+Image Merge_smallest(Image second , Image first) {}
+
+void Merge() {
+    
+    cout << "Choose the image to merge with the current image: ";
+    string filename;
+    cin >> filename;
+    Image secondImage;
+    secondImage.loadNewImage(filename);
+
+    cout << "Choose the merge method ( 1 for resizing the two images for the largest dimensions, 2 for matching with smallest dimensions ): ";
+    int method;
+    cin >> method;
+
+    switch (method) {
+        case 1:
+            currentImg = Merge_biggest(secondImage, currentImg);
+            break;
+        case 2:
+            currentImg = Merge_smallest(secondImage, currentImg);
+            break;
+        default:
+            cout << "Invalid choice." << endl;
+            return;
+    }
+
+    successFilterImplementation();
+
 }
 
 
