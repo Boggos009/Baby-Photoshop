@@ -1,5 +1,8 @@
 #include "Image_Class.h"
 #include <iomanip>
+#include <algorithm>
+#include <iostream>
+using namespace std;
 
 /*
     Name            ID      Section     What he did
@@ -417,16 +420,18 @@ void Resize()
 
 // Filter 9
 
-Image Opacity(Image first, Image second, double opacity) {
+Image Opacity(Image const& first, Image const& second, double opacity , int newWidth, int newHeight) {
 
-    for (int i = 0; i < first.width; i++) {
+    Image result(newWidth, newHeight);
+
+    for (int i = 0; i < newWidth; i++) {
         
-        for (int j = 0; j < first.height; j++) {
+        for (int j = 0; j < newHeight; j++) {
             
             for (int k = 0; k < first.channels; k++) {
                
-                currentImg(i, j, k) = static_cast<unsigned char>(
-                    opacity * first(i, j, k) + (1 - opacity) * second(i, j, k)
+                result(i, j, k) = static_cast<unsigned char>(
+                    opacity * first(i, j, k) + (1 - opacity) * second(i, j, k) + 0.5
                 );
 
             }
@@ -435,36 +440,102 @@ Image Opacity(Image first, Image second, double opacity) {
 
     }
 
-    return currentImg;
-
+    return result;
 }
 
-Image Merge_biggest(Image second , Image first , double opacity) {}
+Image ResizedImage(Image const& img, int newWidth , int newHeight ) {
 
-Image Merge_smallest(Image second , Image first , double opacity) {}
+    Image resizedImage1(newWidth, newHeight);
+    for (int i = 0; i < newWidth; i++)
+    {
+        for (int j = 0; j < newHeight; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                int originalX = i * img.width / newWidth;
+                int originalY = j * img.height / newHeight;
+                resizedImage1(i, j, k) = img(originalX, originalY, k);
+            }
+        }
+    }
+    return resizedImage1;
+}
+
+Image Merge_biggest(Image const& first, Image const& second, double opacity) {
+
+    if (first.width == second.width && first.height == second.height) {
+        
+        return Opacity(first, second, opacity, first.width, first.height);
+    
+    }
+
+    else {
+        
+        int newWidth = max(first.width, second.width);
+        int newHeight = max(first.height, second.height);
+
+        Image resizedFirst = ResizedImage(first, newWidth, newHeight);
+        Image resizedSecond = ResizedImage(second, newWidth, newHeight);
+
+        return Opacity(resizedFirst, resizedSecond, opacity, newWidth, newHeight);
+
+    }
+    
+}
+
+Image Merge_smallest(Image const& first, Image const& second, double opacity) {
+
+    if (first.width == second.width && first.height == second.height) {
+        
+        return Opacity(first, second, opacity, first.width, first.height);
+    
+    }
+    
+    else{
+        
+        int newWidth = min(first.width, second.width);
+        int newHeight = min(first.height, second.height);
+
+        return Opacity(first, second, opacity, newWidth, newHeight);
+    
+    }
+    
+}
 
 void Merge() {
     
     cout << "Choose the image to merge with the current image: ";
     string filename;
     cin >> filename;
+    
     Image secondImage;
     secondImage.loadNewImage(filename);
 
-    cout << "Choose the merge method ( 1 for resizing the two images for the largest dimensions, 2 for matching with smallest dimensions ): ";
+    cout << "Choose the merge method:\n" << "1. Resize both images to largest dimensions\n" << "2. Merge common area (smallest dimensions)\n" << "Choice: ";
+    
     int method;
     cin >> method;
 
-    cout << "Choose the opacity for the first image (0.0 to 1.0): ";
     double opacity;
-    cin >> opacity;
+    
+    while (true) {
+        
+        cout << "Choose the opacity for the first image (0.0 to 1.0): ";
+        if (cin >> opacity && opacity >= 0.0 && opacity <= 1.0) {
+            break;
+        }
+        cout << "Invalid input! Please enter a decimal number between 0.0 and 1.0.\n\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    }
 
     switch (method) {
         case 1:
-            currentImg = Merge_biggest(secondImage, currentImg, opacity);
+            currentImg = Merge_biggest(currentImg, secondImage, opacity);
             break;
         case 2:
-            currentImg = Merge_smallest(secondImage, currentImg, opacity);
+            currentImg = Merge_smallest(currentImg, secondImage, opacity);
             break;
         default:
             cout << "Invalid choice." << endl;
@@ -472,7 +543,6 @@ void Merge() {
     }
 
     successFilterImplementation();
-
 }
 
 
