@@ -1,22 +1,19 @@
 #include "Image_Class.h"
 #include <iomanip>
-#include <algorithm>
-#include <iostream>
-using namespace std;
 
 /*
     Name            ID      Section     What he did
 
-Bavly Boules    20250113                1,5
+Bavly Boules    20250113                1,5,9,13
 
 
-Bemwa Bakhet    20250125                2,6,10
+Bemwa Bakhet    20250125                2,6,10,14
 
 
-Zeyad Sayed     20250247                3,15
+Zeyad Sayed     20250247                3,7,11,15
 
 
-Martin Rashad   20250513                4,8
+Martin Rashad   20250513                4,8,12,16
 
 
 */
@@ -27,6 +24,7 @@ using namespace std;
 Image currentImg;
 string currentFIle="";
 Image backupImg;
+Image originalImg;
 
 //some definitions
 bool rediriction(int op);
@@ -367,9 +365,59 @@ void RotateImage()
 
 
 // Filter 7
+void Dark()
+{
+    for(int i=0;i<currentImg.width;i++)
+    {
+        for(int j=0;j<currentImg.height;j++)
+        {
+            for(int channel = 0; channel < currentImg.channels; channel++)
+            {
+                int value = (int)(currentImg(i, j, channel) * 0.5);
+                if (value > 255) value = 255;
+                currentImg(i, j, channel) = (unsigned char)value;
+            }
+        }
+    }
+}
+
+void Light()
+{
+    for(int i=0;i<currentImg.width;i++)
+    {
+        for(int j=0;j<currentImg.height;j++)
+        {
+            for(int channel = 0; channel < currentImg.channels; channel++)
+            {
+                int value = (int)(currentImg(i, j, channel) * 1.5);
+                if (value > 255) value = 255;
+                currentImg(i, j, channel) = (unsigned char)value;
+            }
+        }
+    }
+}
+
 void DarkandLight()
 {
-    cout<<"Will be Implemented Soon....\n";
+    cout << "Choose flip direction (0 = Dark / 1 = Light)\n";
+    int choice; 
+    cin >> choice;
+    
+    switch (choice)
+    {
+    case 0:
+        Dark();
+        break;
+    
+    case 1:
+        Light();
+        break;
+    
+    default:
+        cout << "Invalid choice\n";
+        return;
+    }
+    successFilterImplementation();
 }
 
 
@@ -429,7 +477,7 @@ Image Opacity(Image const& first, Image const& second, double opacity , int newW
         for (int j = 0; j < newHeight; j++) {
             
             for (int k = 0; k < first.channels; k++) {
-               
+        
                 result(i, j, k) = static_cast<unsigned char>(
                     opacity * first(i, j, k) + (1 - opacity) * second(i, j, k) + 0.5
                 );
@@ -631,7 +679,37 @@ void DetectEdges()
 // Filter 11
 void Crop()
 {
-    cout<<"Will be Implemented Soon....\n";
+    int startX, startY, newWidth, newHeight;
+
+    cout << "Enter starting point (x,y): ";
+    cin >> startX >> startY;
+
+    cout << "Enter crop dimensions (Width,Height): ";
+    cin >> newWidth >> newHeight;
+
+    if (startX < 0 || startY < 0 || newWidth <= 0 || newHeight <= 0 ||
+        (startX + newWidth) > currentImg.width ||
+        (startY + newHeight) > currentImg.height)
+    {
+        cerr << "Invalid crop parameters\n";
+        return;
+    }
+
+    Image croppedImage(newWidth, newHeight);
+    for (int y = 0; y < newHeight; ++y)
+    {
+        for (int x = 0; x < newWidth; ++x)
+        {
+            for (int channel = 0; channel < currentImg.channels; ++channel)
+            {
+                croppedImage(x, y, channel) =
+                    currentImg(startX + x, startY + y, channel);
+            }
+        }
+    }
+
+    currentImg = croppedImage;
+    successFilterImplementation();
 }
 
 
@@ -710,6 +788,10 @@ int main()
 void successFilterImplementation()
 {
     cout<<"Filter has been implemented successfully.\n";
+    cout<<"Press 1 if u want to save your changes now\n";
+    bool ok;cin>>ok;
+    if(ok)
+        Saving();
 }
 
 void ChooseImg()
@@ -718,6 +800,7 @@ void ChooseImg()
     string name;cin>>name;
     currentImg.loadNewImage(name);
     currentFIle = name;
+    originalImg = currentImg;
 }
 
 //saving options (Edit the current image, or create a new one with the same edits.)
@@ -755,10 +838,17 @@ void Undo()
         cout<<"Invalid operation\n";
 }
 
+
 bool rediriction(int op)
 {
     switch (op)
     {
+    case -3:
+        system("cls");
+        cout<<"Successfull operation.\n";
+        currentImg = originalImg;
+        backupImg.imageData = nullptr;
+        break;
     case -2:
         system("cls");
         Saving();
@@ -884,6 +974,7 @@ int showMenu()
     cout<<"\n\t\t----------------------------\n";
     cout<<"\t\tChoose one of the following options:\n";
     cout<<"\t\t----------------------------\n";
+    cout<<"Back to the original picture (press -3)\n";
     cout<<"Saving the current edits (press -2)\n";
     cout<<"Undo the last filter (press -1 , valid for 1 time only)\n";
     cout<<"Load new image (press 0)\n";
