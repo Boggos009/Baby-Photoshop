@@ -364,9 +364,59 @@ void RotateImage()
 
 
 // Filter 7
+void Dark()
+{
+    for(int i=0;i<currentImg.width;i++)
+    {
+        for(int j=0;j<currentImg.height;j++)
+        {
+            for(int channel = 0; channel < currentImg.channels; channel++)
+            {
+                int value = (int)(currentImg(i, j, channel) * 0.5);
+                if (value > 255) value = 255;
+                currentImg(i, j, channel) = (unsigned char)value;
+            }
+        }
+    }
+}
+
+void Light()
+{
+    for(int i=0;i<currentImg.width;i++)
+    {
+        for(int j=0;j<currentImg.height;j++)
+        {
+            for(int channel = 0; channel < currentImg.channels; channel++)
+            {
+                int value = (int)(currentImg(i, j, channel) * 1.5);
+                if (value > 255) value = 255;
+                currentImg(i, j, channel) = (unsigned char)value;
+            }
+        }
+    }
+}
+
 void DarkandLight()
 {
-    cout<<"Will be Implemented Soon....\n";
+   cout << "Choose flip direction (0 = Dark / 1 = Light)\n";
+    int choice; 
+    cin >> choice;
+    
+    switch (choice)
+    {
+    case 0:
+        Dark();
+        break;
+    
+    case 1:
+        Light();
+        break;
+    
+    default:
+        cout << "Invalid choice\n";
+        return;
+    }
+    successFilterImplementation();
 }
 
 
@@ -507,7 +557,37 @@ void DetectEdges()
 // Filter 11
 void Crop()
 {
-    cout<<"Will be Implemented Soon....\n";
+    int startX, startY, newWidth, newHeight;
+
+    cout << "Enter starting point (x,y): ";
+    cin >> startX >> startY;
+
+    cout << "Enter crop dimensions (Width,Height): ";
+    cin >> newWidth >> newHeight;
+
+    if (startX < 0 || startY < 0 || newWidth <= 0 || newHeight <= 0 ||
+        (startX + newWidth) > currentImg.width ||
+        (startY + newHeight) > currentImg.height)
+    {
+        cerr << "Invalid crop parameters\n";
+        return;
+    }
+
+    Image croppedImage(newWidth, newHeight);
+    for (int y = 0; y < newHeight; ++y)
+    {
+        for (int x = 0; x < newWidth; ++x)
+        {
+            for (int channel = 0; channel < currentImg.channels; ++channel)
+            {
+                croppedImage(x, y, channel) =
+                    currentImg(startX + x, startY + y, channel);
+            }
+        }
+    }
+
+    currentImg = croppedImage;
+    successFilterImplementation();
 }
 
 
