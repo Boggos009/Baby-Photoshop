@@ -1,19 +1,22 @@
 #include "Image_Class.h"
 #include <iomanip>
+#include <iostream>
+#include <algorithm>
+using namespace std;
 
 /*
     Name            ID      Section     What he did
 
-Bavly Boules    20250113                1,5
+Bavly Boules    20250113                1,5,9,13
 
 
-Bemwa Bakhet    20250125                2,6,10
+Bemwa Bakhet    20250125                2,6,10,14
 
 
-Zeyad Sayed     20250247                3,15
+Zeyad Sayed     20250247                3,7,11,15
 
 
-Martin Rashad   20250513                4,8
+Martin Rashad   20250513                4,8,12,16
 
 
 */
@@ -24,6 +27,7 @@ using namespace std;
 Image currentImg;
 string currentFIle="";
 Image backupImg;
+Image originalImg;
 
 //some definitions
 bool rediriction(int op);
@@ -398,7 +402,7 @@ void Light()
 
 void DarkandLight()
 {
-   cout << "Choose flip direction (0 = Dark / 1 = Light)\n";
+    cout << "Choose flip direction (0 = Dark / 1 = Light)\n";
     int choice; 
     cin >> choice;
     
@@ -466,9 +470,156 @@ void Resize()
 
 
 // Filter 9
-void Merge()
-{
-    cout<<"Will be Implemented Soon....\n";
+
+Image Opacity(Image const& first, Image const& second, double opacity , int newWidth, int newHeight) {
+
+    Image result(newWidth, newHeight);
+
+    for (int i = 0; i < newWidth; i++) {
+        
+        for (int j = 0; j < newHeight; j++) {
+            
+            for (int k = 0; k < first.channels; k++) {
+        
+                result(i, j, k) = static_cast<unsigned char>(
+                    opacity * first(i, j, k) + (1 - opacity) * second(i, j, k) + 0.5
+                );
+
+            }
+
+        }
+
+    }
+
+    return result;
+}
+
+Image ResizedImage(Image const& img, int newWidth , int newHeight ) {
+
+    Image resizedImage1(newWidth, newHeight);
+    for (int i = 0; i < newWidth; i++)
+    {
+        for (int j = 0; j < newHeight; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                int originalX = i * img.width / newWidth;
+                int originalY = j * img.height / newHeight;
+                resizedImage1(i, j, k) = img(originalX, originalY, k);
+            }
+        }
+    }
+    return resizedImage1;
+}
+
+Image Merge_biggest(Image const& first, Image const& second, double opacity) {
+
+    if (first.width == second.width && first.height == second.height) {
+        
+        return Opacity(first, second, opacity, first.width, first.height);
+    
+    }
+
+    else {
+        
+        int newWidth = max(first.width, second.width);
+        int newHeight = max(first.height, second.height);
+
+        Image resizedFirst = ResizedImage(first, newWidth, newHeight);
+        Image resizedSecond = ResizedImage(second, newWidth, newHeight);
+
+        return Opacity(resizedFirst, resizedSecond, opacity, newWidth, newHeight);
+
+    }
+    
+}
+
+Image Merge_smallest(Image const& first, Image const& second, double opacity) {
+
+    if (first.width == second.width && first.height == second.height) {
+        
+        return Opacity(first, second, opacity, first.width, first.height);
+    
+    }
+    
+    else{
+        
+        int newWidth = min(first.width, second.width);
+        int newHeight = min(first.height, second.height);
+
+        return Opacity(first, second, opacity, newWidth, newHeight);
+    
+    }
+    
+}
+
+void Merge() {
+    
+    Image secondImage;
+    while (true) {
+
+        cout << "\nChoose the image to merge with the current image:\n";
+        string filename;
+        cin >> filename;
+
+        try
+        {
+            secondImage.loadNewImage(filename);
+            break;
+        }
+
+        catch (const std::exception& x)
+        {
+            cout << "\nPlease enter a valid existing image filename.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+
+    }
+
+    int method;
+    while (true) {
+    
+        cout << "Choose the merge method:\n"
+         << "1. Resize both images to largest dimensions\n"
+         << "2. Merge common area (smallest dimensions)\n"
+         << "Choice: ";
+
+        if (cin >> method && (method == 1 || method == 2)) break;
+    
+
+        cout << "\n\nInvalid choice! Please enter 1 or 2.\n\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    
+    }
+
+    double opacity;
+    while (true) {
+        
+        cout << "Choose the opacity for the first image (0.0 to 1.0): ";
+        if (cin >> opacity && opacity >= 0.0 && opacity <= 1.0) {
+            break;
+        }
+        cout << "Invalid input! Please enter a decimal number between 0.0 and 1.0.\n\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    }
+
+    switch (method) {
+        case 1:
+            currentImg = Merge_biggest(currentImg, secondImage, opacity);
+            break;
+        case 2:
+            currentImg = Merge_smallest(currentImg, secondImage, opacity);
+            break;
+        default:
+            cout << "Invalid choice." << endl;
+            return;
+    }
+
+    successFilterImplementation();
 }
 
 
@@ -599,15 +750,54 @@ void Blur()
 
 
 // Filter 13
-void Sunlight()
-{
-    cout<<"Will be Implemented Soon....\n";
+void Sunlight() {
+
+    for (int i = 0; i < currentImg.width; i++) {
+
+        for (int j = 0; j < currentImg.height; j++) {
+
+            int r = currentImg(i, j, 0);
+            int g = currentImg(i, j, 1);
+            int b = currentImg(i, j, 2);
+
+            r = (int)(r * 1.15);
+            g = (int)(g * 1.08);
+            b = (int)(b * 0.85);
+
+            if (r > 255) r = 255;
+            if (g > 255) g = 255;
+            if (b > 255) b = 255;
+            if (r < 0) r = 0;
+            if (g < 0) g = 0;
+            if (b < 0) b = 0;
+
+            currentImg(i, j, 0) = (unsigned char)r;
+            currentImg(i, j, 1) = (unsigned char)g;
+            currentImg(i, j, 2) = (unsigned char)b;
+
+        }
+
+    }
+
+    successFilterImplementation();
+
 }
 
 // Filter 14
 void OldTv()
 {
-    cout<<"Will be Implemented Soon....\n";
+    for(int y=0;y<currentImg.height;y++)
+    {
+        for(int x=0;x<currentImg.width;x++)
+        {
+            for(int k=0;k<currentImg.channels;k++)
+            {
+                if(y%2==0)
+                    currentImg(x,y,k) *=0.3;
+            }
+        }
+    }
+    successFilterImplementation();
 }
 
 
@@ -646,6 +836,69 @@ void Infrared()
     cout<<"Will be Implemented Soon....\n";
 }
 
+// Filter 17
+void Skew()
+{
+    cout<<"Will be Implemented Soon....\n";
+}
+
+
+//Filter 18
+void OilPainting()
+{
+    int radius = 5;
+    int levels = 20;
+
+    Image output(currentImg.width, currentImg.height);
+
+    for(int y=0;y<currentImg.height;y++)
+    {
+        for(int x=0;x<currentImg.width;x++)
+        {
+            int sumR[20] = {};
+            int sumG[20] = {};
+            int sumB[20] = {};
+            int count[20] = {};
+
+            for(int ny=y-radius;ny<=y+radius;ny++)
+            {
+                for(int nx=x-radius;nx<=x+radius;nx++)
+                {
+                    if(nx<0 || nx>=currentImg.width ||
+                    ny<0 || ny>=currentImg.height)
+                        continue;
+
+                    int r = currentImg(nx,ny,0);
+                    int g = currentImg(nx,ny,1);
+                    int b = currentImg(nx,ny,2);
+
+                    int degree = (r+g+b)/3;
+                    int bin = degree * levels / 256;
+
+                    count[bin]++;
+                    sumR[bin] += r;
+                    sumG[bin] += g;
+                    sumB[bin] += b;
+                }
+            }
+
+            int mx = 0;
+
+            for(int i=1;i<levels;i++)
+            {
+                if(count[i] > count[mx])
+                    mx = i;
+            }
+
+            output(x,y,0) = sumR[mx] / count[mx];
+            output(x,y,1) = sumG[mx] / count[mx];
+            output(x,y,2) = sumB[mx] / count[mx];
+        }
+    }
+
+    currentImg = output;
+    successFilterImplementation();
+}
 
 
 
@@ -653,7 +906,7 @@ int main()
 {
     ChooseImg();
     int op;
-    while ((op = showMenu())<=16)
+    while ((op = showMenu())<=18)
     {
         rediriction(op);
         system("pause");
@@ -666,6 +919,10 @@ int main()
 void successFilterImplementation()
 {
     cout<<"Filter has been implemented successfully.\n";
+    cout<<"Press 1 if u want to save your changes now\n";
+    bool ok;cin>>ok;
+    if(ok)
+        Saving();
 }
 
 void ChooseImg()
@@ -674,6 +931,7 @@ void ChooseImg()
     string name;cin>>name;
     currentImg.loadNewImage(name);
     currentFIle = name;
+    originalImg = currentImg;
 }
 
 //saving options (Edit the current image, or create a new one with the same edits.)
@@ -711,10 +969,17 @@ void Undo()
         cout<<"Invalid operation\n";
 }
 
+
 bool rediriction(int op)
 {
     switch (op)
     {
+    case -3:
+        system("cls");
+        cout<<"Successfull operation.\n";
+        currentImg = originalImg;
+        backupImg.imageData = nullptr;
+        break;
     case -2:
         system("cls");
         Saving();
@@ -823,6 +1088,18 @@ bool rediriction(int op)
         Infrared();
         break;
     
+    case 17:
+        backupImg = currentImg;
+        system("cls");
+        Skew();
+        break;
+    
+    case 18:
+        backupImg = currentImg;
+        system("cls");
+        OilPainting();
+        break;
+    
     default:
         return false;
         break;
@@ -840,6 +1117,7 @@ int showMenu()
     cout<<"\n\t\t----------------------------\n";
     cout<<"\t\tChoose one of the following options:\n";
     cout<<"\t\t----------------------------\n";
+    cout<<"Back to the original picture (press -3)\n";
     cout<<"Saving the current edits (press -2)\n";
     cout<<"Undo the last filter (press -1 , valid for 1 time only)\n";
     cout<<"Load new image (press 0)\n";
@@ -859,7 +1137,9 @@ int showMenu()
     cout<<"Filter 14: Wano old TV\n";
     cout<<"Filter 15: Purple Wano\n";
     cout<<"Filter 16: Infrared photography\n";
-    cout<<"Exit (any number >16)\n";
+    cout<<"Filter 17: Skew image\n";
+    cout<<"Filter 18: Oil painting\n";
+    cout<<"Exit (any number >18)\n";
     cout<<"\t\t----------------------------\n";
 
     int op = 0;cin>>op;
