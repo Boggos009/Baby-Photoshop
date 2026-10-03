@@ -1,5 +1,8 @@
 #include "Image_Class.h"
 #include <iomanip>
+#include <iostream>
+#include <algorithm>
+using namespace std;
 
 /*
     Name            ID      Section     What he did
@@ -552,20 +555,46 @@ Image Merge_smallest(Image const& first, Image const& second, double opacity) {
 
 void Merge() {
     
-    cout << "Choose the image to merge with the current image: ";
-    string filename;
-    cin >> filename;
-    
     Image secondImage;
-    secondImage.loadNewImage(filename);
+    while (true) {
 
-    cout << "Choose the merge method:\n" << "1. Resize both images to largest dimensions\n" << "2. Merge common area (smallest dimensions)\n" << "Choice: ";
-    
+        cout << "\nChoose the image to merge with the current image:\n";
+        string filename;
+        cin >> filename;
+
+        try
+        {
+            secondImage.loadNewImage(filename);
+            break;
+        }
+
+        catch (const std::exception& x)
+        {
+            cout << "\nPlease enter a valid existing image filename.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+
+    }
+
     int method;
-    cin >> method;
+    while (true) {
+    
+        cout << "Choose the merge method:\n"
+         << "1. Resize both images to largest dimensions\n"
+         << "2. Merge common area (smallest dimensions)\n"
+         << "Choice: ";
+
+        if (cin >> method && (method == 1 || method == 2)) break;
+    
+
+        cout << "\n\nInvalid choice! Please enter 1 or 2.\n\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    
+    }
 
     double opacity;
-    
     while (true) {
         
         cout << "Choose the opacity for the first image (0.0 to 1.0): ";
