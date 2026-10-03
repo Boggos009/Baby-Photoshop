@@ -750,9 +750,37 @@ void Blur()
 
 
 // Filter 13
-void Sunlight()
-{
-    cout<<"Will be Implemented Soon....\n";
+void Sunlight() {
+
+    for (int i = 0; i < currentImg.width; i++) {
+
+        for (int j = 0; j < currentImg.height; j++) {
+
+            int r = currentImg(i, j, 0);
+            int g = currentImg(i, j, 1);
+            int b = currentImg(i, j, 2);
+
+            r = (int)(r * 1.15);
+            g = (int)(g * 1.08);
+            b = (int)(b * 0.85);
+
+            if (r > 255) r = 255;
+            if (g > 255) g = 255;
+            if (b > 255) b = 255;
+            if (r < 0) r = 0;
+            if (g < 0) g = 0;
+            if (b < 0) b = 0;
+
+            currentImg(i, j, 0) = (unsigned char)r;
+            currentImg(i, j, 1) = (unsigned char)g;
+            currentImg(i, j, 2) = (unsigned char)b;
+
+        }
+
+    }
+
+    successFilterImplementation();
+
 }
 
 // Filter 14
@@ -844,8 +872,8 @@ void OilPainting()
                     int g = currentImg(nx,ny,1);
                     int b = currentImg(nx,ny,2);
 
-                    int intensity = (r+g+b)/3;
-                    int bin = intensity * levels / 256;
+                    int degree = (r+g+b)/3;
+                    int bin = degree * levels / 256;
 
                     count[bin]++;
                     sumR[bin] += r;
