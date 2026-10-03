@@ -21,7 +21,6 @@ Martin Rashad   20250513                4,8,12,16
 
 */
 
-using namespace std;
 
 //some global variables
 Image currentImg;
