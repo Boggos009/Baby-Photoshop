@@ -745,7 +745,72 @@ void Crop()
 // Filter 12
 void Blur()
 {
-    cout<<"Will be Implemented Soon....\n";
+    cout << "please choose the level of bluring, from 1 to 5\n";
+    int r;
+    cin >> r;
+
+    int R = currentImg.width > currentImg.height ? r * currentImg.height * 0.01 : r * currentImg.width * 0.01;
+
+    if (r < 1 || r > 5)
+    {
+        cout << "Invalid input. Please enter a number between 1 and 5." << endl;
+        return;
+    }
+    else
+    {
+        Image tempImg(currentImg.width, currentImg.height);
+        Image blurredImg(currentImg.width, currentImg.height);
+
+        for (int i = 0; i < currentImg.width; i++)
+        {
+            for (int j = 0; j < currentImg.height; j++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+                    int sum = 0;
+                    int count = 0;
+
+                    for (int x = -R; x <= R; x++)
+                    {
+                        int newX = i + x;
+                        if (newX >= 0 && newX < currentImg.width)
+                        {
+                            sum += currentImg(newX, j, k);
+                            count++;
+                        }
+                    }
+
+                    tempImg(i, j, k) = sum / count;
+                }
+            }
+        }
+
+        for (int i = 0; i < currentImg.width; i++)
+        {
+            for (int j = 0; j < currentImg.height; j++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+                    int sum = 0;
+                    int count = 0;
+
+                    for (int y = -R; y <= R; y++)
+                    {
+                        int newY = j + y;
+                        if (newY >= 0 && newY < currentImg.height)
+                        {
+                            sum += tempImg(i, newY, k);
+                            count++;
+                        }
+                    }
+
+                    blurredImg(i, j, k) = sum / count;
+                }
+            }
+        }
+        currentImg = blurredImg;
+    }
+    successFilterImplementation();
 }
 
 
@@ -833,7 +898,25 @@ void PurpleWano()
 // Filter 16
 void Infrared()
 {
-    cout<<"Will be Implemented Soon....\n";
+    Image newImage(currentImg.width, currentImg.height);
+
+    for (int i = 0; i < currentImg.width; i++)
+    {
+        for (int j = 0; j < currentImg.height; j++)
+        {
+            int r = currentImg(i, j, 0);
+            int g = currentImg(i, j, 1);
+            int b = currentImg(i, j, 2);
+
+            int red = (r + g + b) / 3;
+
+            newImage(i, j, 0) = 255 - red;
+            newImage(i, j, 1) = 0;
+            newImage(i, j, 2) = 0;
+        }
+    }
+    currentImg = newImage;
+    successFilterImplementation();
 }
 
 // Filter 17
