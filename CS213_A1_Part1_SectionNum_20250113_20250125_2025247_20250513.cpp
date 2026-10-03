@@ -729,7 +729,18 @@ void Sunlight()
 // Filter 14
 void OldTv()
 {
-    cout<<"Will be Implemented Soon....\n";
+    for(int y=0;y<currentImg.height;y++)
+    {
+        for(int x=0;x<currentImg.width;x++)
+        {
+            for(int k=0;k<currentImg.channels;k++)
+            {
+                if(y%2==0)
+                    currentImg(x,y,k) *=0.3;
+            }
+        }
+    }
+    successFilterImplementation();
 }
 
 
@@ -768,6 +779,69 @@ void Infrared()
     cout<<"Will be Implemented Soon....\n";
 }
 
+// Filter 17
+void Skew()
+{
+    cout<<"Will be Implemented Soon....\n";
+}
+
+
+//Filter 18
+void OilPainting()
+{
+    int radius = 5;
+    int levels = 20;
+
+    Image output(currentImg.width, currentImg.height);
+
+    for(int y=0;y<currentImg.height;y++)
+    {
+        for(int x=0;x<currentImg.width;x++)
+        {
+            int sumR[20] = {};
+            int sumG[20] = {};
+            int sumB[20] = {};
+            int count[20] = {};
+
+            for(int ny=y-radius;ny<=y+radius;ny++)
+            {
+                for(int nx=x-radius;nx<=x+radius;nx++)
+                {
+                    if(nx<0 || nx>=currentImg.width ||
+                    ny<0 || ny>=currentImg.height)
+                        continue;
+
+                    int r = currentImg(nx,ny,0);
+                    int g = currentImg(nx,ny,1);
+                    int b = currentImg(nx,ny,2);
+
+                    int intensity = (r+g+b)/3;
+                    int bin = intensity * levels / 256;
+
+                    count[bin]++;
+                    sumR[bin] += r;
+                    sumG[bin] += g;
+                    sumB[bin] += b;
+                }
+            }
+
+            int mx = 0;
+
+            for(int i=1;i<levels;i++)
+            {
+                if(count[i] > count[mx])
+                    mx = i;
+            }
+
+            output(x,y,0) = sumR[mx] / count[mx];
+            output(x,y,1) = sumG[mx] / count[mx];
+            output(x,y,2) = sumB[mx] / count[mx];
+        }
+    }
+
+    currentImg = output;
+    successFilterImplementation();
+}
 
 
 
@@ -775,7 +849,7 @@ int main()
 {
     ChooseImg();
     int op;
-    while ((op = showMenu())<=16)
+    while ((op = showMenu())<=18)
     {
         rediriction(op);
         system("pause");
@@ -957,6 +1031,18 @@ bool rediriction(int op)
         Infrared();
         break;
     
+    case 17:
+        backupImg = currentImg;
+        system("cls");
+        Skew();
+        break;
+    
+    case 18:
+        backupImg = currentImg;
+        system("cls");
+        OilPainting();
+        break;
+    
     default:
         return false;
         break;
@@ -994,7 +1080,9 @@ int showMenu()
     cout<<"Filter 14: Wano old TV\n";
     cout<<"Filter 15: Purple Wano\n";
     cout<<"Filter 16: Infrared photography\n";
-    cout<<"Exit (any number >16)\n";
+    cout<<"Filter 17: Skew image\n";
+    cout<<"Filter 18: Oil painting\n";
+    cout<<"Exit (any number >18)\n";
     cout<<"\t\t----------------------------\n";
 
     int op = 0;cin>>op;
