@@ -18,6 +18,9 @@ cmake-build-*/
 
 # Exception: Keep luffy.jpg
 !luffy.jpg
+!sample1.png
+!sample2.png
+
 
 # System files
 .DS_Store
