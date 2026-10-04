@@ -921,9 +921,45 @@ void Infrared()
 // Filter 17
 void Skew()
 {
-    cout<<"Will be Implemented Soon....\n";
-}
+    cout<<"Enter the degree of skewing: ";
+    int theta;cin>>theta;
+    double angle = theta * M_PI / 180;
 
+    int offset = ceil((currentImg.height - 1) * abs(tan(angle)));
+    int newWidth = currentImg.width + offset;
+
+    Image output(newWidth, currentImg.height);
+
+    for(int y=0;y<output.height;y++)
+    {
+        for(int x=0;x<output.width;x++)
+        {
+            for(int k=0;k<3;k++)
+            {
+                output(x,y,k) = 255;
+            }
+        }
+    }
+
+    for(int y=0;y<output.height;y++)
+    {
+        for(int x=0;x<output.width;x++)
+        {
+            int oldX = round(x - offset + y * abs(tan(angle)));
+
+            if(oldX<0 || oldX>=currentImg.width)
+                continue;
+
+            for(int k=0;k<3;k++)
+            {
+                output(x,y,k) = currentImg(oldX,y,k);
+            }
+        }
+    }
+
+    currentImg = output;
+    successFilterImplementation();
+}
 
 //Filter 18
 void OilPainting()
