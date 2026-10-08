@@ -369,11 +369,7 @@ void RotateImage()
 // Filter 7
 
 void applyBrightness(double factor){
-<<<<<<< HEAD
     for(int i=0;i<currentImg.width;i++)
-=======
-     for(int i=0;i<currentImg.width;i++)
->>>>>>> fdc4f32b8651f252b80330dd7ff4edb53151b10b
     {
         for(int j=0;j<currentImg.height;j++)
         {
@@ -438,7 +434,7 @@ void DarkandLight()
     }
 
     DarkandLight(choice,percent);
-    
+
     successFilterImplementation();
 
 }
