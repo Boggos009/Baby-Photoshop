@@ -2,12 +2,32 @@
 .vscode/
 .idea/
 cmake-build-*/
+.vs/
 
-# Binaries & Compiled Files (Linux & Windows)
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Build folders
+build/
+Debug/
+Release/
+
+# Binaries & Compiled Files
 *.exe
 *.out
 *.o
 *.obj
+*.dll
+*.so
+*.a
+*.lib
+
+# Debug / compiler files
+*.pdb
+*.ilk
 
 # Ignore all images
 *.[jJ][pP][gG]
@@ -16,18 +36,11 @@ cmake-build-*/
 *.[bB][mM][pP]
 *.[tT][gG][aA]
 
-# Exception: Keep luffy.jpg
+# Exception: Keep project screenshots/assets
 !luffy.jpg
 !sample1.png
 !sample2.png
 
-
 # System files
 .DS_Store
 Thumbs.db
-
-#exe ignore
-CS213_A1_Part1_SectionNum_20250113_20250125_2025247_20250513.exe
-CS213_A1_Part1_SectionNum_20250113_20250125_2025247_20250513.pdb
-vc140.pdb
-CS213_A1_Part1_SectionNum_20250113_20250125_2025247_20250513.ilk
