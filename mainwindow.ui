@@ -1,0 +1,1387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Baby Photoshop - CS213 FCAI Cairo University</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="mainLayout">
+    <item>
+     <layout class="QVBoxLayout" name="imageAreaLayout">
+      <item>
+       <widget class="QSplitter" name="imageSplitter">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <widget class="QGroupBox" name="originalGroupBox">
+         <property name="title">
+          <string>Original image</string>
+         </property>
+         <layout class="QVBoxLayout" name="originalGroupLayout">
+          <item>
+           <widget class="QScrollArea" name="originalScrollArea">
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="originalScrollContents">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>507</width>
+               <height>306</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="originalScrollLayout">
+              <item>
+               <widget class="QLabel" name="originalImageLabel">
+                <property name="text">
+                 <string>No image loaded.
+Use File &gt; Load Image (Ctrl+O)</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QGroupBox" name="currentGroupBox">
+         <property name="title">
+          <string>Current image (after filters)</string>
+         </property>
+         <layout class="QVBoxLayout" name="currentGroupLayout">
+          <item>
+           <widget class="QScrollArea" name="currentScrollArea">
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="currentScrollContents">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>330</width>
+               <height>306</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="currentScrollLayout">
+              <item>
+               <widget class="QLabel" name="currentImageLabel">
+                <property name="text">
+                 <string>No image loaded.</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="imageInfoLabel">
+        <property name="text">
+         <string>File: -   |   Size: -   |   Zoom: 100%</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="controlPanelLayout">
+      <item>
+       <widget class="QGroupBox" name="fileGroupBox">
+        <property name="title">
+         <string>File</string>
+        </property>
+        <layout class="QHBoxLayout" name="fileButtonsLayout">
+         <item>
+          <widget class="QPushButton" name="btnLoad">
+           <property name="text">
+            <string>Load</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnSave">
+           <property name="text">
+            <string>Save</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnSaveAs">
+           <property name="text">
+            <string>Save As...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="filterGroupBox">
+        <property name="title">
+         <string>Filter</string>
+        </property>
+        <layout class="QVBoxLayout" name="filterGroupLayout">
+         <item>
+          <widget class="QComboBox" name="filterComboBox">
+           <item>
+            <property name="text">
+             <string>1. Grayscale Conversion</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2. Black and White</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3. Invert Image</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4. Add Frame</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>5. Flip Image</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>6. Rotate Image</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>7. Darken / Lighten</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>8. Resize Image</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>9. Merge Images</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>10. Detect Edges</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>11. Crop Image</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>12. Blur Image</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>13. Natural Sunlight (Wano)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>14. Old TV (Den Den Mushi)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>15. Purple Night</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>16. Infrared Photography</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>17. Skew Image (Bonus)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>18. Oil Painting (Bonus)</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="optionsGroupBox">
+           <property name="title">
+            <string>Options</string>
+           </property>
+           <layout class="QVBoxLayout" name="optionsGroupLayout">
+            <item>
+             <widget class="QStackedWidget" name="filterOptionsStack">
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <widget class="QWidget" name="pageNone">
+               <layout class="QVBoxLayout" name="pageNoneLayout">
+                <item>
+                 <widget class="QLabel" name="noOptionsLabel">
+                  <property name="text">
+                   <string>This filter has no options.</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="pageBW">
+               <layout class="QFormLayout" name="pageBWLayout">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="lblBwThreshold">
+                  <property name="text">
+                   <string>Threshold</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <layout class="QHBoxLayout" name="bwThresholdLayout">
+                  <item>
+                   <widget class="QSlider" name="bwThresholdSlider">
+                    <property name="minimum">
+                     <number>0</number>
+                    </property>
+                    <property name="maximum">
+                     <number>255</number>
+                    </property>
+                    <property name="value">
+                     <number>128</number>
+                    </property>
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="bwThresholdSpin">
+                    <property name="minimum">
+                     <number>0</number>
+                    </property>
+                    <property name="maximum">
+                     <number>255</number>
+                    </property>
+                    <property name="value">
+                     <number>128</number>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="pageFrame">
+               <layout class="QFormLayout" name="pageFrameLayout">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="lblFrameType">
+                  <property name="text">
+                   <string>Frame type</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="frameTypeCombo">
+                  <item>
+                   <property name="text">
+                    <string>Simple</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Fancy</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="lblFrameColor">
+                  <property name="text">
+                   <string>Color</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QComboBox" name="frameColorCombo">
+                  <item>
+                   <property name="text">
+                    <string>Black</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>White</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="pageFlip">
+               <layout class="QVBoxLayout" name="pageFlipLayout">
+                <item>
+                 <widget class="QRadioButton" name="flipHorizontalRadio">
+                  <property name="text">
+                   <string>Horizontal (left - right)</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="flipVerticalRadio">
+                  <property name="text">
+                   <string>Vertical (top - bottom)</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="pageRotate">
+               <layout class="QVBoxLayout" name="pageRotateLayout">
+                <item>
+                 <widget class="QRadioButton" name="rotate90Radio">
+                  <property name="text">
+                   <string>90° clockwise</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="rotate180Radio">
+                  <property name="text">
+                   <string>180°</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="rotate270Radio">
+                  <property name="text">
+                   <string>270° clockwise</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="pageBrightness">
+               <layout class="QFormLayout" name="pageBrightnessLayout">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="lblBrightnessMode">
+                  <property name="text">
+                   <string>Mode</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <layout class="QHBoxLayout" name="brightnessModeLayout">
+                  <item>
+                   <widget class="QRadioButton" name="darkenRadio">
+                    <property name="text">
+                     <string>Darken</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="lightenRadio">
+                    <property name="text">
+                     <string>Lighten</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="lblBrightnessLevel">
+                  <property name="text">
+                   <string>Level (%)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <layout class="QHBoxLayout" name="brightnessLevelLayout">
+                  <item>
+                   <widget class="QSlider" name="brightnessSlider">
+                    <property name="minimum">
+                     <number>0</number>
+                    </property>
+                    <property name="maximum">
+                     <number>100</number>
+                    </property>
+                    <property name="value">
+                     <number>50</number>
+                    </property>
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="brightnessSpin">
+                    <property name="suffix">
+                     <string> %</string>
+                    </property>
+                    <property name="minimum">
+                     <number>0</number>
+                    </property>
+                    <property name="maximum">
+                     <number>100</number>
+                    </property>
+                    <property name="value">
+                     <number>50</number>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="pageResize">
+               <layout class="QFormLayout" name="pageResizeLayout">
+                <item row="0" column="0" colspan="2">
+                 <widget class="QRadioButton" name="resizeByDimsRadio">
+                  <property name="text">
+                   <string>New dimensions</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="lblResizeWidth">
+                  <property name="text">
+                   <string>Width (px)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QSpinBox" name="resizeWidthSpin">
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>20000</number>
+                  </property>
+                  <property name="value">
+                   <number>500</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="lblResizeHeight">
+                  <property name="text">
+                   <string>Height (px)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QSpinBox" name="resizeHeightSpin">
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>20000</number>
+                  </property>
+                  <property name="value">
+                   <number>500</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0" colspan="2">
+                 <widget class="QCheckBox" name="resizeKeepAspectCheck">
+                  <property name="text">
+                   <string>Keep aspect ratio</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0" colspan="2">
+                 <widget class="QRadioButton" name="resizeByRatioRadio">
+                  <property name="text">
+                   <string>Ratio of reduction / increase</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="lblResizeRatio">
+                  <property name="text">
+                   <string>Ratio (%)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QDoubleSpinBox" name="resizeRatioSpin">
+                  <property name="suffix">
+                   <string> %</string>
+                  </property>
+                  <property name="minimum">
+                   <double>1.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>1000.000000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>100.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="pageMerge">
+               <layout class="QVBoxLayout" name="pageMergeLayout">
+                <item>
+                 <widget class="QPushButton" name="mergeLoadSecondButton">
+                  <property name="text">
+                   <string>Load second image...</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="mergeSecondPathLabel">
+                  <property name="text">
+                   <string>No second image selected.</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="mergeResizeRadio">
+                  <property name="text">
+                   <string>Resize to biggest width and height</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="mergeCommonAreaRadio">
+                  <property name="text">
+                   <string>Merge common area (smaller W and H)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QFormLayout" name="mergeParamsLayout">
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="lblMergeOffsetX">
+                    <property name="text">
+                     <string>Offset X</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QSpinBox" name="mergeOffsetXSpin">
+                    <property name="minimum">
+                     <number>-20000</number>
+                    </property>
+                    <property name="maximum">
+                     <number>20000</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="lblMergeOffsetY">
+                    <property name="text">
+                     <string>Offset Y</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QSpinBox" name="mergeOffsetYSpin">
+                    <property name="minimum">
+                     <number>-20000</number>
+                    </property>
+                    <property name="maximum">
+                     <number>20000</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QLabel" name="lblMergeOpacity">
+                    <property name="text">
+                     <string>Opacity of 2nd</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="1">
+                   <layout class="QHBoxLayout" name="mergeOpacityLayout">
+                    <item>
+                     <widget class="QSlider" name="mergeOpacitySlider">
+                      <property name="minimum">
+                       <number>0</number>
+                      </property>
+                      <property name="maximum">
+                       <number>100</number>
+                      </property>
+                      <property name="value">
+                       <number>50</number>
+                      </property>
+                      <property name="orientation">
+                       <enum>Qt::Orientation::Horizontal</enum>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QSpinBox" name="mergeOpacitySpin">
+                      <property name="suffix">
+                       <string> %</string>
+                      </property>
+                      <property name="minimum">
+                       <number>0</number>
+                      </property>
+                      <property name="maximum">
+                       <number>100</number>
+                      </property>
+                      <property name="value">
+                       <number>50</number>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QLabel" name="mergeHintLabel">
+                  <property name="text">
+                   <string>Tip: drag the second image over the preview to choose the overlap area.</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="pageCrop">
+               <layout class="QFormLayout" name="pageCropLayout">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="lblCropX">
+                  <property name="text">
+                   <string>Start X</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QSpinBox" name="cropXSpin">
+                  <property name="maximum">
+                   <number>20000</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="lblCropY">
+                  <property name="text">
+                   <string>Start Y</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QSpinBox" name="cropYSpin">
+                  <property name="maximum">
+                   <number>20000</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="lblCropWidth">
+                  <property name="text">
+                   <string>Width</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QSpinBox" name="cropWidthSpin">
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>20000</number>
+                  </property>
+                  <property name="value">
+                   <number>100</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="lblCropHeight">
+                  <property name="text">
+                   <string>Height</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QSpinBox" name="cropHeightSpin">
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>20000</number>
+                  </property>
+                  <property name="value">
+                   <number>100</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0" colspan="2">
+                 <widget class="QCheckBox" name="cropSelectMouseCheck">
+                  <property name="text">
+                   <string>Select area with the mouse</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="pageBlur">
+               <layout class="QFormLayout" name="pageBlurLayout">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="lblBlurLevel">
+                  <property name="text">
+                   <string>Blur level</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <layout class="QHBoxLayout" name="blurLevelLayout">
+                  <item>
+                   <widget class="QSlider" name="blurLevelSlider">
+                    <property name="minimum">
+                     <number>1</number>
+                    </property>
+                    <property name="maximum">
+                     <number>20</number>
+                    </property>
+                    <property name="value">
+                     <number>5</number>
+                    </property>
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="blurLevelSpin">
+                    <property name="minimum">
+                     <number>1</number>
+                    </property>
+                    <property name="maximum">
+                     <number>20</number>
+                    </property>
+                    <property name="value">
+                     <number>5</number>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="pageSkew">
+               <layout class="QFormLayout" name="pageSkewLayout">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="lblSkewAngle">
+                  <property name="text">
+                   <string>Angle (degrees)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <layout class="QHBoxLayout" name="skewAngleLayout">
+                  <item>
+                   <widget class="QSlider" name="skewAngleSlider">
+                    <property name="minimum">
+                     <number>-85</number>
+                    </property>
+                    <property name="maximum">
+                     <number>85</number>
+                    </property>
+                    <property name="value">
+                     <number>40</number>
+                    </property>
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="skewAngleSpin">
+                    <property name="suffix">
+                     <string>°</string>
+                    </property>
+                    <property name="minimum">
+                     <number>-85</number>
+                    </property>
+                    <property name="maximum">
+                     <number>85</number>
+                    </property>
+                    <property name="value">
+                     <number>40</number>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="pageOil">
+               <layout class="QFormLayout" name="pageOilLayout">
+               </layout>
+              </widget>
+              <widget class="QWidget" name="pageEdge">
+               <layout class="QVBoxLayout" name="pageEdgeLayout">
+                <item>
+                 <widget class="QCheckBox" name="detectEdgeSmoothCheck">
+                  <property name="text">
+                   <string>Smooth image before edge detection</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnApply">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>36</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Apply Filter</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="historyGroupBox">
+        <property name="title">
+         <string>History</string>
+        </property>
+        <layout class="QHBoxLayout" name="historyButtonsLayout">
+         <item>
+          <widget class="QPushButton" name="btnUndo">
+           <property name="text">
+            <string>Undo</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnRedo">
+           <property name="text">
+            <string>Redo</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnReset">
+           <property name="text">
+            <string>Reset</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="controlPanelSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1280</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionLoad"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSaveAs"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionReset"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="actionZoomIn"/>
+    <addaction name="actionZoomOut"/>
+    <addaction name="actionFitToWindow"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="windowTitle">
+    <string>Main toolbar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionLoad"/>
+   <addaction name="actionSave"/>
+   <addaction name="actionSaveAs"/>
+   <addaction name="separator"/>
+   <addaction name="actionUndo"/>
+   <addaction name="actionRedo"/>
+   <addaction name="actionReset"/>
+   <addaction name="separator"/>
+   <addaction name="actionZoomIn"/>
+   <addaction name="actionZoomOut"/>
+   <addaction name="actionFitToWindow"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionLoad">
+   <property name="text">
+    <string>Load Image...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="text">
+    <string>Save As...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="text">
+    <string>Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="text">
+    <string>Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
+   </property>
+  </action>
+  <action name="actionReset">
+   <property name="text">
+    <string>Reset to Original</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionZoomIn">
+   <property name="text">
+    <string>Zoom In</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl++</string>
+   </property>
+  </action>
+  <action name="actionZoomOut">
+   <property name="text">
+    <string>Zoom Out</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actionFitToWindow">
+   <property name="text">
+    <string>Fit to Window</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+0</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>bwThresholdSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>bwThresholdSpin</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bwThresholdSpin</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>bwThresholdSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>brightnessSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>brightnessSpin</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>brightnessSpin</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>brightnessSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>mergeOpacitySlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>mergeOpacitySpin</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>mergeOpacitySpin</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>mergeOpacitySlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>blurLevelSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>blurLevelSpin</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>blurLevelSpin</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>blurLevelSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>skewAngleSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>skewAngleSpin</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>skewAngleSpin</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>skewAngleSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnLoad</sender>
+   <signal>clicked()</signal>
+   <receiver>actionLoad</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnSave</sender>
+   <signal>clicked()</signal>
+   <receiver>actionSave</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnSaveAs</sender>
+   <signal>clicked()</signal>
+   <receiver>actionSaveAs</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnUndo</sender>
+   <signal>clicked()</signal>
+   <receiver>actionUndo</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnRedo</sender>
+   <signal>clicked()</signal>
+   <receiver>actionRedo</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnReset</sender>
+   <signal>clicked()</signal>
+   <receiver>actionReset</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

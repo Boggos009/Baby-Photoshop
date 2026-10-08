@@ -5,14 +5,14 @@
 using namespace std;
 
 /*
-    Name            ID      Section     What he did
+    Name            ID      Section     What he did     common work
 
-Bavly Boules    20250113                1,5,9,13
+Bavly Boules    20250113                1,5,9,13        
 
 
 Bemwa Bakhet    20250125                2,6,10,14
-
-
+                                                        additional filters
+                                                    +   GUI
 Zeyad Sayed     20250247                3,7,11,15
 
 
@@ -367,59 +367,76 @@ void RotateImage()
 
 
 // Filter 7
-void Dark()
-{
+
+void applyBrightness(double factor){
     for(int i=0;i<currentImg.width;i++)
     {
         for(int j=0;j<currentImg.height;j++)
         {
             for(int channel = 0; channel < currentImg.channels; channel++)
             {
-                int value = (int)(currentImg(i, j, channel) * 0.5);
+                int value = (int)(currentImg(i, j, channel) * factor);
                 if (value > 255) value = 255;
                 currentImg(i, j, channel) = (unsigned char)value;
             }
         }
     }
 }
-
-void Light()
+void Dark(int percent)
 {
-    for(int i=0;i<currentImg.width;i++)
+    double factor = 1.0 - (percent / 100.0);
+    applyBrightness(factor);
+}
+
+void Light(int percent)
+{
+    double factor = 1.0 + (percent / 100.0);
+    applyBrightness(factor);
+
+}
+
+void DarkandLight(int choice, int percent)
+{
+    switch (choice)
     {
-        for(int j=0;j<currentImg.height;j++)
-        {
-            for(int channel = 0; channel < currentImg.channels; channel++)
-            {
-                int value = (int)(currentImg(i, j, channel) * 1.5);
-                if (value > 255) value = 255;
-                currentImg(i, j, channel) = (unsigned char)value;
-            }
-        }
+        case 0:
+            Dark(percent);
+            break;
+
+        case 1:
+            Light(percent);
+            break;
+
+        default:
+            cout << "Invalid choice\n";
+            return;
     }
 }
 
 void DarkandLight()
 {
-    cout << "Choose flip direction (0 = Dark / 1 = Light)\n";
-    int choice; 
+    cout << "Choose:\n";
+    cout << "0. Dark\n";
+    cout << "1. Light\n";
+
+    int choice;
     cin >> choice;
-    
-    switch (choice)
+
+    cout << "Enter percentage (0 - 100): ";
+
+    int percent;
+    cin >> percent;
+
+    if (percent < 0 || percent > 100 || choice < 0 || choice > 1)
     {
-    case 0:
-        Dark();
-        break;
-    
-    case 1:
-        Light();
-        break;
-    
-    default:
-        cout << "Invalid choice\n";
+        cout << "Invalid input\n";
         return;
     }
+
+    DarkandLight(choice,percent);
+
     successFilterImplementation();
+
 }
 
 
@@ -1030,6 +1047,7 @@ int main()
         system("pause");
     }
     Exit();
+    return 0;
 }
 
 
