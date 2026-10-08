@@ -16,6 +16,7 @@ A C++ image editor that provides different image processing and editing features
 * Load a new image
 * Save edited images
 * Undo the last filter
+* Redo
 * Restore the last original image loaded
 
 ### Filters
@@ -43,6 +44,7 @@ A C++ image editor that provides different image processing and editing features
 
 * C++
 * Image Processing
+* Qt for GUI
 * Git & GitHub
 
 ## Description
@@ -51,8 +53,9 @@ Baby Photoshop v0 is a simple C++ image editor developed as a team project.
 
 The application allows users to load images, apply different image processing filters, undo changes, restore the original image, and save their final edits.
 
-## Some Samples
+## Some Samples and screenshots
 
+#some screens
 <p align="center">
     <b>Edge Detection</b>
   <img src="sample1.png" alt="Edge Detection">
@@ -62,3 +65,21 @@ The application allows users to load images, apply different image processing fi
     <b>Grayscale + Frame</b>
   <img src="sample2.png" alt="Grayscale + Frame">
 </p>
+
+# Some screenshots
+
+<p align="center">
+    <b>Screen 1</b>
+  <img src="screen1.png" alt="Screen1">
+</p>
+
+<p align="center">
+    <b>Screen 2</b>
+  <img src="screen2.png" alt="Screen2">
+</p>
+
+<p align="center">
+    <b>Screen 3</b>
+  <img src="screen3.png" alt="Screen3">
+</p>
+
