@@ -438,11 +438,7 @@ void DarkandLight()
     }
 
     DarkandLight(choice,percent);
-<<<<<<< HEAD
-
-=======
     
->>>>>>> fdc4f32b8651f252b80330dd7ff4edb53151b10b
     successFilterImplementation();
 
 }
