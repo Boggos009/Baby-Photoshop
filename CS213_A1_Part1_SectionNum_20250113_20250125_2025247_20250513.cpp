@@ -173,7 +173,7 @@ void classicframe()
 
 void ornateframe()
 {
-    int thickness = 0, line = 0, blackframe = 0;
+    int thickness = 0, blackframe = 0;
     if (currentImg.width <= currentImg.height)
     {
         thickness = currentImg.width * 0.03;
