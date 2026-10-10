@@ -2,7 +2,7 @@ Baby Photoshop - GUI integration
 =================================
 
 This project keeps the provided filter implementation in:
-CS213_A1_Part1_SectionNum_20250113_20250125_2025247_20250513.cpp
+CS213_A1_Part1_SectionNum_20250113_20250125_20250247_20250513.cpp
 
 The GUI is added through gui_filter_adapter.cpp/.h, mainwindow.cpp/.h and mainwindow.ui.
 The adapter includes the existing filter source and calls its functions; the filter algorithms
