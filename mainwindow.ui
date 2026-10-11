@@ -685,16 +685,6 @@ Use File &gt; Load Image (Ctrl+O)</string>
                   </item>
                  </layout>
                 </item>
-                <item>
-                 <widget class="QLabel" name="mergeHintLabel">
-                  <property name="text">
-                   <string>Tip: drag the second image over the preview to choose the overlap area.</string>
-                  </property>
-                  <property name="wordWrap">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
                </layout>
               </widget>
               <widget class="QWidget" name="pageCrop">
