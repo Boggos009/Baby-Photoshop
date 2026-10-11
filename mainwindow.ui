@@ -607,47 +607,13 @@ Use File &gt; Load Image (Ctrl+O)</string>
                 <item>
                  <layout class="QFormLayout" name="mergeParamsLayout">
                   <item row="0" column="0">
-                   <widget class="QLabel" name="lblMergeOffsetX">
-                    <property name="text">
-                     <string>Offset X</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="1">
-                   <widget class="QSpinBox" name="mergeOffsetXSpin">
-                    <property name="minimum">
-                     <number>-20000</number>
-                    </property>
-                    <property name="maximum">
-                     <number>20000</number>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QLabel" name="lblMergeOffsetY">
-                    <property name="text">
-                     <string>Offset Y</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="1">
-                   <widget class="QSpinBox" name="mergeOffsetYSpin">
-                    <property name="minimum">
-                     <number>-20000</number>
-                    </property>
-                    <property name="maximum">
-                     <number>20000</number>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="0">
                    <widget class="QLabel" name="lblMergeOpacity">
                     <property name="text">
                      <string>Opacity of 2nd</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="2" column="1">
+                  <item row="0" column="1">
                    <layout class="QHBoxLayout" name="mergeOpacityLayout">
                     <item>
                      <widget class="QSlider" name="mergeOpacitySlider">

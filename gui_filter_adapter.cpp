@@ -253,7 +253,7 @@ bool guiApplyFilter(int filterNumber,
             } else {
                 currentImg = Merge_biggest(currentImg, secondImage, opacity);
             }
-            notice = "Merge offsets are not used by the existing CLI merge functions; merge mode and opacity are connected.";
+            notice = "Merge applied using the selected merge mode and opacity.";
             break;
         }
 

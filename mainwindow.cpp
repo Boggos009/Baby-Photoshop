@@ -209,8 +209,6 @@ void MainWindow::updateOptionsPage() {
     ui->filterOptionsStack->setCurrentIndex(page);
 
     ui->cropSelectMouseCheck->setEnabled(false);
-    ui->mergeOffsetXSpin->setEnabled(false);
-    ui->mergeOffsetYSpin->setEnabled(false);
 
     // Page 0 is shared by filters that have no GUI parameters. Always reset
     // its text so one filter cannot leave a stale message for another filter.
@@ -369,9 +367,7 @@ GuiFilterParams MainWindow::collectFilterParams() const {
 
     params.mergeSecondImage = mergeSecondPath_.toStdString();
     params.mergeMethod = ui->mergeResizeRadio->isChecked() ? 1 : 2;
-    params.mergeOpacity = ui->mergeOpacitySpin->value() / 100.0;
-    params.mergeOffsetX = ui->mergeOffsetXSpin->value();
-    params.mergeOffsetY = ui->mergeOffsetYSpin->value();
+    params.mergeOpacity = 1.0 - ui->mergeOpacitySpin->value() / 100.0;
 
     params.cropX = ui->cropXSpin->value();
     params.cropY = ui->cropYSpin->value();

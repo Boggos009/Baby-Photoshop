@@ -29,8 +29,6 @@ struct GuiFilterParams {
     std::string mergeSecondImage;
     int mergeMethod = 1;        // 1 biggest dimensions, 2 common area
     double mergeOpacity = 0.5;
-    int mergeOffsetX = 0;
-    int mergeOffsetY = 0;
     int cropX = 0;
     int cropY = 0;
     int cropWidth = 100;

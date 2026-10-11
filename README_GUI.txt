@@ -32,7 +32,7 @@ therefore informational when the existing implementation does not expose that pa
 - Filter 2 uses threshold 125.
 - Filter 4 classic frame supports black/white; thickness/color picker are mapped to that behavior.
 - Filter 7 uses a fixed 50% darken/lighten effect.
-- Filter 9 connects merge method + opacity; offset fields are not used by the existing helpers.
+- Filter 9 connects merge method + opacity; the unused offset controls have been removed.
 - Filter 12 accepts levels 1..5.
 - Filter 18 uses fixed radius 5 and 20 levels.
 
