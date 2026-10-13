@@ -18,7 +18,7 @@
 // We compile it through this adapter so the GUI can call its functions without
 // changing the algorithms or creating a second copy of them.
 #define main babyPhotoCliMain
-#include "CS213_A1_Part1_SectionNum_20250113_20250125_20250247_20250513.cpp"
+#include "main.cpp"
 #undef main
 
 namespace {

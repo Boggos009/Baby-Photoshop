@@ -13,7 +13,7 @@ set(CMAKE_AUTORCC ON)
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 add_executable(BabyPhoto
-    main.cpp
+    start.cpp
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui

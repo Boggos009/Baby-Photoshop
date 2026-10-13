@@ -37,7 +37,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>507</width>
+               <width>346</width>
                <height>306</height>
               </rect>
              </property>
@@ -74,7 +74,7 @@ Use File &gt; Load Image (Ctrl+O)</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>330</width>
+               <width>223</width>
                <height>306</height>
               </rect>
              </property>
@@ -247,7 +247,7 @@ Use File &gt; Load Image (Ctrl+O)</string>
             <item>
              <widget class="QStackedWidget" name="filterOptionsStack">
               <property name="currentIndex">
-               <number>0</number>
+               <number>1</number>
               </property>
               <widget class="QWidget" name="pageNone">
                <layout class="QVBoxLayout" name="pageNoneLayout">
@@ -265,45 +265,8 @@ Use File &gt; Load Image (Ctrl+O)</string>
               </widget>
               <widget class="QWidget" name="pageBW">
                <layout class="QFormLayout" name="pageBWLayout">
-                <item row="0" column="0">
-                 <widget class="QLabel" name="lblBwThreshold">
-                  <property name="text">
-                   <string>Threshold</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="1">
-                 <layout class="QHBoxLayout" name="bwThresholdLayout">
-                  <item>
-                   <widget class="QSlider" name="bwThresholdSlider">
-                    <property name="minimum">
-                     <number>0</number>
-                    </property>
-                    <property name="maximum">
-                     <number>255</number>
-                    </property>
-                    <property name="value">
-                     <number>128</number>
-                    </property>
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Horizontal</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QSpinBox" name="bwThresholdSpin">
-                    <property name="minimum">
-                     <number>0</number>
-                    </property>
-                    <property name="maximum">
-                     <number>255</number>
-                    </property>
-                    <property name="value">
-                     <number>128</number>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
+                 <layout class="QHBoxLayout" name="bwThresholdLayout"/>
                 </item>
                </layout>
               </widget>
@@ -824,8 +787,7 @@ Use File &gt; Load Image (Ctrl+O)</string>
                </layout>
               </widget>
               <widget class="QWidget" name="pageOil">
-               <layout class="QFormLayout" name="pageOilLayout">
-               </layout>
+               <layout class="QFormLayout" name="pageOilLayout"/>
               </widget>
               <widget class="QWidget" name="pageEdge">
                <layout class="QVBoxLayout" name="pageEdgeLayout">
@@ -1067,38 +1029,6 @@ Use File &gt; Load Image (Ctrl+O)</string>
  </widget>
  <resources/>
  <connections>
-  <connection>
-   <sender>bwThresholdSlider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>bwThresholdSpin</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>bwThresholdSpin</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>bwThresholdSlider</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>brightnessSlider</sender>
    <signal>valueChanged(int)</signal>

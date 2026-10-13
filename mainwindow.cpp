@@ -25,18 +25,16 @@ const QString kImageFilters =
 
 int optionsPageForFilter(int filterNumber) {
     switch (filterNumber) {
-    case 2: return 1;   // BW
     case 4: return 2;   // Frame
     case 5: return 3;   // Flip
     case 6: return 4;   // Rotate
     case 7: return 5;   // Brightness
     case 8: return 6;   // Resize
     case 9: return 7;   // Merge
+    case 10: return 12; // Edge detection
     case 11: return 8;  // Crop
     case 12: return 9;  // Blur
     case 17: return 10; // Skew
-    case 18: return 11; // Oil
-    case 10: return 12; // Edge detection
     default: return 0;
     }
 }
@@ -72,9 +70,6 @@ MainWindow::MainWindow(QWidget* parent)
             [this](int) { updateOptionsPage(); });
 
     // The current CLI implementations have fixed values for these options.
-    ui->bwThresholdSpin->setValue(125);
-    ui->bwThresholdSpin->setEnabled(false);
-    ui->lblBwThreshold->setText(QStringLiteral("Threshold (fixed)"));
 
     ui->brightnessSlider->setValue(50);
     ui->brightnessSpin->setValue(50);
@@ -214,11 +209,7 @@ void MainWindow::updateOptionsPage() {
     // its text so one filter cannot leave a stale message for another filter.
     ui->noOptionsLabel->setText(QStringLiteral("This filter has no options."));
 
-    if (filterNumber == 2) {
-        ui->lblBwThreshold->setText(QStringLiteral("Threshold (fixed)"));
-        ui->bwThresholdSpin->setEnabled(false);
-        ui->bwThresholdSpin->setToolTip(QStringLiteral("Fixed at 125 by the existing CLI implementation."));
-    } else if (filterNumber == 4) {
+    if (filterNumber == 4) {
         const bool classic = ui->frameTypeCombo->currentIndex() == 0;
         ui->frameColorCombo->setEnabled(classic);
     } else if (filterNumber == 7) {

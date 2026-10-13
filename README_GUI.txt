@@ -1,42 +1,74 @@
-Baby Photoshop - GUI integration
-=================================
+BABY PHOTOSHOP - GUI PROJECT CS213 OOP Programming - FCAI, Cairo
+University ================================================
 
-This project keeps the provided filter implementation in:
-CS213_A1_Part1_SectionNum_20250113_20250125_20250247_20250513.cpp
+1. PROJECT OVERVIEW
 
-The GUI is added through gui_filter_adapter.cpp/.h, mainwindow.cpp/.h and mainwindow.ui.
-The adapter includes the existing filter source and calls its functions; the filter algorithms
-were not rewritten here.
+Baby Photoshop is a C++ image-processing project with a Qt Widgets
+graphical user interface (GUI). The GUI lets the user load an image,
+select an available filter, configure supported options, preview the
+result, and save the output.
 
-Build requirements
-------------------
-- C++20
-- Qt 6.x Widgets (this setup was configured for the installed Qt 6.12 MinGW 64-bit)
-- CMake
-- MinGW 64-bit
+The existing filter implementation is kept in:
+main.cpp
 
-In CLion
---------
-1. Open this folder as a CMake project.
-2. Set the CLion toolchain to the MinGW 13.1 toolchain you installed with Qt.
-3. Set Qt CMake prefix path to the installed Qt prefix, for example:
-   C:\Qt\6.12.0\mingw_64
-4. Reload CMake.
-5. Build and run the BabyPhoto target.
+The GUI is connected to the filter functions through the adapter files.
 
-Important
----------
-The existing CLI filters 1-16 were treated as pre-existing team work. The GUI layer feeds
-parameters to the existing console-oriented functions where needed. Some GUI controls are
-therefore informational when the existing implementation does not expose that parameter:
-- Filter 2 uses threshold 125.
-- Filter 4 classic frame supports black/white; thickness/color picker are mapped to that behavior.
-- Filter 7 uses a fixed 50% darken/lighten effect.
-- Filter 9 connects merge method + opacity; the unused offset controls have been removed.
-- Filter 12 accepts levels 1..5.
-- Filter 18 uses fixed radius 5 and 20 levels.
+2. PROJECT FILES
 
-The assignment permits AI assistance for Task 4 (Filters 17 & 18 and GUI), while Tasks 1-3
-should remain understood and explained by the team.
+-   main.cpp
+    Main filter implementation and console-oriented filter functions.
+-   Image_Class.h Image class header supplied for the project.
+-   stb_image.h / stb_image_write.h Image loading/writing headers used
+    by the project.
+-   start.cpp Application entry point for the GUI.
+-   mainwindow.cpp / mainwindow.h / mainwindow.ui GUI behavior,
+    declarations, and Qt Designer interface.
+-   gui_filter_adapter.cpp / gui_filter_adapter.h Connect GUI parameters
+    and actions to the existing filter functions.
+-   CMakeLists.txt CMake project and build configuration.
+-   README_GUI.txt Setup and build instructions.
 
-GUI note: images use Fit-to-Window mode by default. The preview is recomputed automatically when the main window is resized. Zoom In/Out switches from Fit mode to manual zoom; Fit to Window returns to full-image preview.
+3. REQUIREMENTS
+-   C++20-compatible compiler
+-   CMake
+-   Qt 6 Widgets
+-   A compatible C++ toolchain
+
+The project was configured for this setup: - Qt 6.12.0 - MinGW 64-bit -
+MinGW 13.1 - CLion on Windows
+
+Other compatible setups may require adjusting the compiler/toolchain and
+Qt CMake prefix path.
+
+4. SETTING UP AND RUNNING IN CLION (WINDOWS)
+
+1.  Extract the submitted ZIP file into a folder.
+2.  Open that folder in CLion as a CMake project. Select the folder
+    containing CMakeLists.txt.
+3.  Configure a compatible MinGW 64-bit toolchain in CLion.
+4.  Make sure the Qt 6 installation is available.
+5.  Set the Qt CMake prefix path to your Qt installation, for example:
+    C:\6.12.0_64
+6.  Reload the CMake project when prompted, or use the Reload CMake
+    Project action.
+7.  Select the BabyPhoto run target.
+8.  Build the project, then run the target.
+9.  If CMake reports a missing Qt package or compiler, verify the Qt
+    path, compiler, and CMake toolchain settings.
+
+The exact installation paths may differ from one computer to another.
+
+5. FILTER NOTES AND LIMITATIONS
+The GUI passes parameters to the existing filter functions where
+supported.
+-   Filter 4 (classic frame): the GUI offers black/white color
+    selection.
+-   Filter 7 (Darken/lighten) : the GUI offers level slider [0%:100%].
+-   Filter 9 (merge): connects the merge method and opacity.
+-   Filter 12: accepts levels from 1 to 5.
+
+
+6. IMAGE PREVIEW
+Images use Fit-to-Window mode by default. The preview is recomputed when
+the main window is resized. Zoom In/Out switches to manual zoom, while
+Fit to Window returns to the full-image preview.
